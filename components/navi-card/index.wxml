@@ -1,0 +1,6 @@
+<!--components/navi-card/index.wxml-->
+<view class="navi-card">
+    <text style="width: auto; height: auto; display: block; box-sizing: border-box; position: relative; left: -22rpx; top: 6rpx; font-size: x-large; line-height: 86rpx; font-weight: 600">{{title}}</text>
+    
+  <image style="position: relative; left: 0rpx; top: 41rpx; width: 330rpx; height: 306rpx; display: block; box-sizing: border-box" class="navi-icon" src="{{icon}}" />
+</view>

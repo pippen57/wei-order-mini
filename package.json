@@ -1,0 +1,17 @@
+{
+    "name": "wei-order-mini",
+    "version": "1.0.0",
+    "description": "",
+    "main": "app.js",
+    "dependencies": {
+        "lin-ui": "^0.9.12"
+    },
+    "devDependencies": {
+        "lin-ui-cli": "^0.1.0-beta.6"
+    },
+    "scripts": {
+        "load": "lin-ui-cli load"
+    },
+    "author": "",
+    "license": "ISC"
+}

@@ -1,0 +1,9 @@
+{
+    "navigationBarBackgroundColor": "#3963BC",
+    "navigationBarTextStyle": "white",
+  "usingComponents": {
+    "navi-card": "/components/navi-card/index",
+    "l-tab-bar":"/miniprogram_npm/lin-ui/tab-bar/index",
+    "l-notice-bar":"/miniprogram_npm/lin-ui/notice-bar/index"
+  }
+}

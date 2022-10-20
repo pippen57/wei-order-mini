@@ -1,0 +1,82 @@
+<!-- 左侧导航 -->
+<view class='tui-fixed-left'>
+    <scroll-view class='tui-city-scroll' scroll-x="true" scroll-y="true" style='height:100%;' scroll-with-animation="true" scroll-top="{{leftMenuTop}}">
+        <text class="menu-item {{index === currentActiveIndex ? 'menu-active' : ''}}" wx:for="{{navList}}" wx:key="unique" data-index="{{index}}" id='{{index}}' catchtap='changeMenu'>{{item.categoryName}}</text>
+    </scroll-view>
+</view>
+<!-- 右侧滚动商品 -->
+<view class='content'>
+    <scroll-view class='tui-city-scroll-y' scroll-y="true" style='height:92%;' scroll-with-animation="true" scroll-top="{{rightProTop}}" bindscroll="scroll">
+        <view class='pro-item' wx:for="{{navList}}" wx:key="unique">
+            <view class='tui-list-head' id='NAV{{index}}'>{{item.categoryName}}</view>
+            <view class='tui-list-li'>
+                <view wx:for-item='items' wx:for="{{item.children}}" wx:key="unique" bindtap="onCategory" data-select="{{items}}">
+                    <view style="width: 530rpx; height: 122rpx; display: block; box-sizing: border-box; margin: 0 0 50rpx">
+                        <image class="image-style" src="{{items.pic}}" />
+                        <view style="position: relative; left: 175rpx; top: -168rpx; width: 100%; height: 58rpx; display: block; color: #3963BC; font-size: large; box-sizing: border-box">
+                            {{items.productName}}</view>
+                        <l-button size="mini" shape="semicircle" style="position: relative; left: 371rpx; top: -147rpx">选规格</l-button>
+
+                        <view style="position: relative; left: 176rpx; top: -208rpx; width: 191rpx; height: 58rpx; display: block; color: red; font-size: large; box-sizing: border-box">¥{{items.price}}/份</view>
+                    </view>
+                </view>
+
+            </view>
+
+
+        </view>
+    </scroll-view>
+</view>
+
+<!-- popup -->
+<l-popup show="{{popupShow}}" animation="{{true}}" contentAlign="center" locked="{{false}}">
+    <view class='center'>
+        <image style="position: relative;border-radius: 18rpx;  width: 700rpx; height: 490rpx; display: inline-block; box-sizing: border-box; left: 0rpx; top: 0rpx" src="{{popupObj.pic}}" />
+
+        <view style="position: relative; width: 392rpx; height: 64rpx; display: block; box-sizing: border-box; top: 13rpx; font-size: 40rpx; color: #3963BC; left: 20rpx; text-align: left">{{popupObj.productName}}</view>
+
+        <view style="position: relative; width: 205rpx; height: 42rpx; display: block; box-sizing: border-box; left: 474rpx; top: -41rpx; color: #d8d8d8; text-align: right">
+            月售{{popupObj.sold_num}}
+        </view>
+
+        <view style="position: relative; width: 100%; background: #d3d3d3; height: 1px; left: 0rpx; top: 374rpx"></view>
+        <l-counter style="position: relative; left: 0rpx; top: 407rpx" l-class="count" min="1" count="1" max="99" step="1" bind:linchange="onCounterChange" />
+        <view style="position: relative; width: 124rpx; height: 42rpx; display: block; box-sizing: border-box; color: red; left: 350rpx; top: 364rpx; text-align: right">
+            ¥{{popupObj.price}}/份
+        </view>
+        <l-button size="medium" shape="semicircle" style="position: relative; left: 496rpx; top: 308rpx" bindtap="addShoppingTrolley" data-add="{{popupObj}}">添加至购物车</l-button>
+
+    </view>
+</l-popup>
+
+<!-- 购物车 -->
+<view class="container">
+    <l-badge value="{{totalCartCount}}" max-count="10" dot="{{false}}" number-type="overflow" shape="circle" wx:if="{{totalCartCount>0}}">
+        <view class="doc-container" bindtap="onTrolley">
+            <image src='/images/trolley_full.png' class='doc-img'></image>
+        </view>
+    </l-badge>
+    <!-- <view wx:else class="doc-container" bindtap="onTrolley">
+        <image src='/images/trolley.png' class='doc-img'></image>
+    </view> -->
+</view>
+
+
+<l-popup show="{{popupTrolleyShow}}" animation="{{true}}" contentAlign="bottom" locked="{{false}}">
+    <view style="position: relative; width: 250rpx; height: 54rpx; left: 454rpx; top: 78rpx; display: block; box-sizing: border-box; text-align: end; color: rgb(114, 114, 114)">清空购物车</view>
+    <view class='popup-bottom'>
+        <view style="width: 750rpx; height: 566rpx; overflow-x: hidden; overflow-y: auto; position: relative; left: 0rpx; top: 80rpx; display: block; box-sizing: border-box">
+            <view style="width: 100%; height: 180rpx; display: block; box-sizing: border-box; position: relative; left: 22rpx; " wx:for="{{trolleyList}}" wx:key="unique">
+                <image class="image-style" src="{{item.pic}}" />
+                <view style="position: relative; left: 175rpx; top: -168rpx; width: 100%; height: 58rpx; display: block; color: #3963BC; font-size: large; box-sizing: border-box">
+                    {{item.productName}}</view>
+                <l-counter style="position: relative; top: -123rpx; left:500rpx" l-class="count" min="1" count="1" max="99" step="1" count="{{item.count}}" bind:linchange="onCounterChange" />
+                <view style="position: relative; left: 174rpx; top: -178rpx; width: 191rpx; height: 58rpx; display: block; color: red; font-size: large; box-sizing: border-box">¥{{item.price}}/份</view>
+            </view>
+        </view>
+        <l-button size="medium" shape="semicircle" style="position: relative; left: 534rpx; top: 127rpx" bindtap="onGoCloseAccount">去结算</l-button>
+    
+        <view style="padding-top: 20px;padding-bottom: 20px;position: relative; width: 322rpx; height: 96rpx; left: 24rpx;  color: red; top: 40rpx; display: block; box-sizing: border-box; text-align: left">¥{{item.totalPrice}}</view>
+    </view>
+
+</l-popup>

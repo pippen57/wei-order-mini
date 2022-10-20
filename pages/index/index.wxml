@@ -1,0 +1,28 @@
+
+<l-tab-bar list="{{list}}" />
+<view class="container">
+  <view class="header">
+    <image class='header-bg' src='/images/index_bg.png' style="position: absolute; left: 0rpx; top: 0rpx"></image>
+    <text class='header-desc' style="position: absolute; left: -22rpx; top: -60rpx; font-size: x-large">
+    萨默尔面馆
+    </text>
+  </view>
+
+  <view class="main">
+    <navi-card
+      title="线上点餐"
+      icon="/images/order.png"
+      data-title="线上点餐"
+      data-navigateMark="diancan"
+      bindtap="onNaviCard"
+    />
+
+    <navi-card
+      title="扫码点餐"
+      icon="/images/or-code.png"
+      data-title="扫码点餐"
+      data-navigateMark="saoma"
+      bindtap="onNaviCard"
+    />
+  </view>
+</view>

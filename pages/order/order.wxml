@@ -1,0 +1,40 @@
+<!--pages/order/order.wxml-->
+<view >
+<view class="navi-card" style=" height: 130rpx; display: flex; margin-left: 15rpx">
+    <text style="width: 668rpx; height: 66rpx; display: block; box-sizing: border-box; position: relative; left: 0rpx; top: -15rpx; line-height: 86rpx; color: black; font-weight: 400; font-size: 35rpx">萨默尔面馆</text>
+    <view style="position: relative; width: 152rpx; color: #d3d3d3; height: 48rpx; display: block; box-sizing: border-box; left: -258rpx; top: -9rpx">
+    17.5km >
+    </view>
+
+</view>
+
+<view class="navi-card" style=" display: flex; margin-left: 15rpx">
+    <view style="width: 720rpx;  position: relative; left: 0rpx;  display: block; box-sizing: border-box;">
+            <view style="width: 740rpx; padding-left: 20rpx; height: 170rpx; display: block; box-sizing: border-box" wx:for="{{trolleyList}}" wx:key="unique">
+                <image style="width: 120rpx; height: 120rpx; padding-top: 20rpx" class="image-style" src="{{item.pic}}" />
+                <text style="width: auto; height: 120rpx; margin-left: 200rpx; position: relative; left: 146rpx; top: -134rpx">
+                    {{item.productName}}</text>
+                <text style="width: auto; height: 120rpx; margin-left: 200rpx; position: relative; left: 146rpx; top: -87rpx">
+                    ×{{item.count}}</text>
+                <view style="padding-left: 150rpx; width: 242rpx; height: 54rpx; display: block; box-sizing: border-box; position: relative; left: 443rpx; top: -134rpx; color: red; font-size: 40rpx">¥{{item.price}}</view>
+            </view>
+        </view>
+</view>
+<view class="navi-card"  style="height: 258rpx; display: flex; margin-left: 15rpx">
+    <text style="width: 668rpx; height: 66rpx; display: block; box-sizing: border-box; color: black; font-weight: 400; font-size: 35rpx; position: relative; left: 0rpx; top: -78rpx" >
+    订单备注</text>
+    <textarea bindblur="bindTextAreaBlur" auto-height placeholder="自动变高" />
+</view>
+<view style="height: 258rpx; display: flex; margin-left: 15rpx"></view>
+</view>
+<view style="position:fixed;bottom:0;width: 100%;background-color: white;height: 150rpx;border-radius:8rpx">
+    <text style="float: left; margin-left: 30rpx;margin-top: 25rpx;">实付金额
+    </text>
+    <text style="float: left; margin-left: 30rpx;margin-top: 15rpx; font-size: x-large;">¥100
+    </text>
+    <l-button style="float: right; margin-right: 30rpx;margin-top: 15rpx;" shape="semicircle" bindtap="onGoCloseAccount">确认付款</l-button>
+
+    
+</view>
+
+    

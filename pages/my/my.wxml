@@ -1,0 +1,32 @@
+<l-tab-bar text-color="#bbbbbb" list="{{list}}" />
+
+<view class='container'>
+  <view class='logo-container'>
+    <image class='logo-img' src='cloud://env-9eb476.656e-env-9eb476-1258886794/images/other/logo.png'></image>
+    <view class="version-container">
+     与你
+    </view>
+  </view>
+
+  <view class='address-container'  style="width: 690rpx; height: 100rpx; display: flex; box-sizing: border-box">
+    <l-icon name='order' class='dot' />
+    <view class='doc-container' bindtap='copyLink'>
+      <text class='doc-txt'>我的订单</text>
+    </view>
+    <l-icon class="dot-right" name='right'  size='20'/>
+  </view>
+  <view class='address-container' style="width: 690rpx; height: 100rpx; display: flex; box-sizing: border-box">
+    <l-icon name='user' class='dot' />
+    <view class='doc-container' bindtap='copyLink' >
+      <text class='doc-txt'>个人资料</text>
+    </view>
+    <l-icon class="dot-right" name='right'  size='20'/>
+  </view>
+  <view class='address-container' style="width: 690rpx; height: 100rpx; display: flex; box-sizing: border-box">
+    <l-icon name='customer-service' class='dot' />
+    <view class='doc-container' bindtap='copyLink' >
+      <text class='doc-txt'>关于</text>
+    </view>
+    <l-icon class="dot-right" name='right' size='20' />
+  </view>
+</view>

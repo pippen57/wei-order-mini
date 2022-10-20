@@ -1,0 +1,225 @@
+page {
+    font-family: "微软雅黑";
+    background-color: rgb(255, 255, 255);
+  }
+  
+  .search {
+    width: 100%;
+    height: 88rpx;
+    background-color: #5196ff;
+    box-sizing: border-box;
+    padding-top: 18rpx;
+    position: fixed;
+    left: 0;
+    top: 0;
+  }
+  
+  .search-box {
+    width: 690rpx;
+    height: 57rpx;
+    margin-left: 30rpx;
+    background-color: #fff;
+    box-sizing: border-box;
+    padding-left: 60rpx;
+    border-radius: 57rpx;
+    font-size: 26rpx;
+  }
+  
+  .question-mark {
+    width: 30rpx;
+    height: 30rpx;
+    position: absolute;
+    left: 45rpx;
+    top: 30rpx;
+  }
+  
+  .tui-fixed-x {
+    /* margin-left: 130px; */
+    position: fixed;
+    top: 89rpx;
+    left: 0;
+  }
+  
+  .tui-fixed-left {
+    width: 180rpx;
+    height: 100%;
+    border-right: 1px solid #dfdfdf;
+    position: fixed;
+    background-color: #f5f5f5;
+    /* top: 10rpx; */
+    left: 0;
+  }
+  
+  .tui-list-head {
+    height: 65rpx;
+    line-height: 65rpx;
+  }
+  
+  .tui-city-scroll {
+    width: 100%;
+  }
+  
+  .menu-item {
+    font-size: 26rpx;
+    box-sizing: border-box;
+    height: 100rpx;
+    line-height: 100rpx;
+    width: 180rpx;
+    background-color: #f7f4f4;
+    display: block;
+    /* border-bottom: 1px solid #dfdfdf; */
+    position: relative;
+    z-index: 10;
+    text-align: center;
+  }
+  
+  .menu-active {
+    border-left: 10rpx solid #3963BC;
+    background-color: #fff;
+  }
+  
+  .content {
+    width: 570rpx;
+    box-sizing: border-box;
+    padding-left: 20rpx;
+    padding-right: 20rpx;
+    height: 100%;
+    position: fixed;
+    /* top: 10rpx; */
+    right: 0;
+  }
+  .card {
+    margin: 10rpx auto !important;
+  }
+  .right-card {
+    height: 180rpx !important;
+    width: 220rpx !important;
+    border-radius: 12rpx !important;
+  }
+  .content-card {
+    margin-top: 10rpx;
+    color: #666;
+    font-size: 26rpx;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 5;
+  }
+  .tui-city-scroll-y {
+    height: 100%;
+    box-sizing: border-box;
+  }
+  
+  .tui-list-head {
+    height: 65rpx;
+    line-height: 65rpx;
+    font-size: 28rpx;
+    font-weight: 700;
+  }
+  .container{
+    position: fixed;
+    right: 60rpx;
+    bottom: 130rpx;
+
+  }
+  .count{
+    margin-left: 30rpx !important
+  }
+  
+  .center {
+    height: 1100rpx;
+    width: 700rpx;
+    background: #fff;
+    border-radius: 18rpx;
+
+  }
+  .popup-bottom {
+    height: 800rpx;
+    width: 100%;
+    background: #fff;
+    border-radius: 18rpx;
+  
+  }
+  .tui-list-li {
+    background-color: #fff;
+    /* height: 400px; */
+    overflow: hidden;
+    color: #fff;
+    font-size: 50rpx;
+    box-sizing: border-box;
+    padding: 20rpx 0 0 0;
+  }
+  
+  .goods-box {
+    width: 170rpx;
+    /* height: 100rpx;
+    background: #c00; */
+    overflow: hidden;
+    margin-right: 10rpx;
+    /* margin-bottom: 10rpx; */
+    float: left;
+  }
+  
+  .tui-list-li .goods-box:nth-child(3n) {
+    margin-right: 0rpx;
+  }
+  
+  .goodsImg {
+    display: block;
+    width: 100rpx;
+    height: 100rpx;
+    margin: 0 auto;
+    margin-bottom: 15rpx;
+  }
+  
+  .goodsName {
+    width: 100%;
+    overflow: hidden;
+    box-sizing: border-box;
+    height: 42rpx;
+    line-height: 42rpx;
+    text-align: center;
+    font-size: 24rpx;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: #333;
+    margin-bottom: 20rpx;
+  }
+
+  .image-style {
+    width: 150rpx;
+    height: 150rpx;
+  }
+  
+
+
+  /* 购物车 */
+
+  
+  .doc-container{
+    position: fixed;
+    right: 40rpx;
+    bottom: 60rpx;
+    z-index: 2;
+    width: 100rpx;
+    height: 100rpx;
+    border-radius: 50%;
+    box-shadow:0px 3px 8px 0px rgba(155,193,185,0.5);
+    display: flex;
+    justify-content: center;
+    background-color: #fff;
+    align-items: center;
+  }
+  
+  .doc-img{
+    width: 50rpx;
+    height:50rpx;
+  }
+  
+  .doc-txt{
+    font-size: 28rpx;
+    color: #3963BC;
+    margin-top: 15rpx;
+  }
+  
