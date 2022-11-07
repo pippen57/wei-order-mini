@@ -129,7 +129,7 @@ page {
   
   .center {
     height: 1100rpx;
-    width: 700rpx;
+    width: 100%;
     background: #fff;
     border-radius: 18rpx;
 
@@ -222,4 +222,114 @@ page {
     color: #3963BC;
     margin-top: 15rpx;
   }
+
+.pup-sku-area {
+    height: 350rpx;
+    overflow-x:hidden;
+    overflow-y:scroll;
+}
+.pup-sku-area .sku-kind {
+    font-size: 12px;
+    color: #999;
+    margin: 0 10px;
+    height: 40px;
+    line-height: 40px;
+  }
   
+  .pup-sku-area .sku-choose {
+    overflow: hidden;
+    margin-bottom: 3px;
+  }
+  
+  .sku-choose-item {
+    display: inline-block;
+    padding: 0 10px;
+    min-width: 20px;
+    max-width: 270px;
+    overflow: hidden;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    margin-left: 10px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    color: #333;
+    background-color: #f7f7f7;
+    font-size: 14px;
+    border:1px solid #aaa;
+  }
+  
+  .sku-choose-item.active {
+    background-color: #3963BC;
+    border:1px solid #3963BC !important;
+    color: #fff;
+  }
+  
+  
+  .sku-choose-item.dashed {
+    border:1px dashed #aaa;
+    color: #aaa;
+  }
+  
+  .pup-sku-count {
+    padding: 0 10px 13px;
+    font-size: 12px;
+  }
+  
+  .pup-sku-count .count-name {
+    color: #999;
+    height: 31px;
+    line-height: 31px;
+    width: 100rpx;
+  }
+  
+  .pup-sku-count .num-wrap {
+    position: relative;
+    z-index: 0;
+    width: 110px;
+    float: right;
+    vertical-align: middle;
+    display: flex;
+  }
+  .loading-img{
+    height: 300rpx;
+    width: 540rpx;
+  }
+  .l-container{
+    background: #f1f1f1 !important;
+  }
+
+  .header {
+    font-size: 28rpx;
+    height: 180rpx;
+    width: 750rpx;
+    font-weight: 300;
+    color: rgba(255, 255, 255, 1);
+    line-height: 36rpx;
+    background: #3683d6;
+    border-radius: 0 0 20rpx 20rpx;
+    box-shadow: 0px 4px 20px 0px rgba(0, 49, 107, 0.3);
+    box-sizing: border-box;
+  }
+  
+  .header-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 750rpx;
+    height: 180rpx;
+    z-index: 1;
+  }
+
+  .header-desc {
+    position: fixed;
+    z-index: 2;
+    font-size: 28rpx;
+    margin: 60rpx 0 0 60rpx;
+    line-height: 48rpx;
+  }
+  .header-container {
+    position:fixed;
+    width: 100%;
+    padding-bottom: 60rpx;
+  }

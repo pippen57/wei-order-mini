@@ -7,7 +7,7 @@ App({
     logs.unshift(Date.now())
     wx.setStorageSync('logs', logs)
     http.getToken();
-
+   
   },
   globalData: {
     userInfo: null,

@@ -21,6 +21,12 @@ function request(params, isGetTonken) {
     responseType: params.responseType == undefined ? 'text' : params.responseType,
     success: function(res) {
       if (res.statusCode == 200) {
+          if(res.data.code!=0){
+            wx.showToast({
+                title: res.data.msg,
+                icon: "none"
+              });
+          }
         //如果有定义了params.callBack，则调用 params.callBack(res.data)
         if (params.callBack) {
           params.callBack(res.data);
@@ -35,14 +41,6 @@ function request(params, isGetTonken) {
         wx.navigateTo({
           url: '/pages/login/login',
         })
-        // // 添加到请求队列
-        // globalData.requestQueue.push(params);
-        // // 是否正在登陆
-        // if (!globalData.isLanding) {
-        //   globalData.isLanding = true
-        //   //重新获取token,再次请求接口
-        //   getToken();
-        // }
       } else if (res.statusCode == 400) {
         wx.showToast({
           title: res.data,
@@ -76,7 +74,7 @@ var getToken = function() {
       // 发送 res.code 到后台换取 openId, sessionKey, unionId
       request({
         login: true,
-        url: '/api/login?code='+res.code,
+        url: '/login?code='+res.code,
     
         callBack: result => {
           // 没有获取到用户昵称，说明服务器没有保存用户的昵称，也就是用户授权的信息并没有传到服务器
@@ -106,7 +104,15 @@ var getToken = function() {
     }
   })
 }
-
+function getProduct(shopId) {
+    request({
+        url: "/product/list/"+shopId,
+        method: "GET",
+        callBack: result => {
+        console.log(result);
+        }
+      })
+  }
 // 更新用户头像昵称
 function updateUserInfo() {
   wx.getUserInfo({
@@ -155,3 +161,4 @@ exports.getToken = getToken;
 exports.request = request;
 exports.getCartCount = getCartCount;
 exports.updateUserInfo = updateUserInfo;
+exports.getProduct = getProduct;

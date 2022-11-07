@@ -1,65 +1,16 @@
 // pages/order/order.js
+var http = require("../../utils/http");
+var app = getApp();
 Page({
 
     /**
      * 页面的初始数据
      */
     data: {
-        trolleyList:[{
-            id:"221111",
-            productName:"臊子面",
-            pic: "https://peng.pippen.top/wei-order/20221011/f57b64e2e7fa4e9cb659713ac2452b23.jpeg",
-            imgs:"https://peng.pippen.top/wei-order/20221011/cf726f84b91a4a19a80619a34860cf79.jpeg",
-            point:"",
-            count:1,
-            price:"15",
-            sold_num:"834"
-        },{
-            id:"221112",
-            productName:"老陕炸酱面",
-            pic: "https://peng.pippen.top/wei-order/20221011/f57b64e2e7fa4e9cb659713ac2452b23.jpeg",
-            imgs:"https://peng.pippen.top/wei-order/20221011/cf726f84b91a4a19a80619a34860cf79.jpeg",
-            point:"",
-            count:1,
-            price:"14",
-            sold_num:"894"
-        },{
-            id:"221113",
-            productName:"油泼面",
-            pic: "https://peng.pippen.top/wei-order/20221011/f57b64e2e7fa4e9cb659713ac2452b23.jpeg",
-            imgs:"https://peng.pippen.top/wei-order/20221011/cf726f84b91a4a19a80619a34860cf79.jpeg",
-            point:"",
-            count:1,
-            price:"9.9",
-            sold_num:"1894"
-        },{
-            id:"221111",
-            productName:"臊子面",
-            pic: "https://peng.pippen.top/wei-order/20221011/f57b64e2e7fa4e9cb659713ac2452b23.jpeg",
-            imgs:"https://peng.pippen.top/wei-order/20221011/cf726f84b91a4a19a80619a34860cf79.jpeg",
-            point:"",
-            count:1,
-            price:"15",
-            sold_num:"834"
-        },{
-            id:"221112",
-            productName:"老陕炸酱面",
-            pic: "https://peng.pippen.top/wei-order/20221011/f57b64e2e7fa4e9cb659713ac2452b23.jpeg",
-            imgs:"https://peng.pippen.top/wei-order/20221011/cf726f84b91a4a19a80619a34860cf79.jpeg",
-            point:"",
-            count:1,
-            price:"14",
-            sold_num:"894"
-        },{
-            id:"221113",
-            productName:"油泼面",
-            pic: "https://peng.pippen.top/wei-order/20221011/f57b64e2e7fa4e9cb659713ac2452b23.jpeg",
-            imgs:"https://peng.pippen.top/wei-order/20221011/cf726f84b91a4a19a80619a34860cf79.jpeg",
-            point:"",
-            count:1,
-            price:"9.9",
-            sold_num:"1894"
-        }],
+        trolleyList:[],
+        remarks:'',
+        totalCount:0,
+        totalMoney:0.0
     },
 
     /**
@@ -80,14 +31,54 @@ Page({
      * 生命周期函数--监听页面显示
      */
     onShow() {
-
+        // 获取
+        this.preOrder()
     },
-
+    preOrder(){
+        http.request({
+            url: "/order",
+            method: "GET",
+            callBack: result => {
+                console.log(result);
+                this.setData({
+                    trolleyList: result.data.prodList,
+                    totalCount:result.data.totalCount,
+                    totalMoney:result.data.totalMoney
+                })
+            }
+        })
+    },
+    /**
+     * 确认付款 并吊起微信支付
+     */
+    confirmOrder(){
+        http.request({
+            url: "/order",
+            method: "POST",
+            data:{
+                shopId:1588058446765236226,
+                remarks:this.data.remarks
+            },
+            callBack: result => {
+                console.log(result);
+            }
+        })
+    },
+    bindTextAreaBlur(e){
+        console.log(e.detail.value);
+        this.setData({
+            remarks:e.detail.value
+        })
+    },
     /**
      * 生命周期函数--监听页面隐藏
      */
     onHide() {
-
+        this.setData({
+            trolleyList:[],
+            totalCount:0,
+            totalMoney:0.0
+        })
     },
 
     /**
