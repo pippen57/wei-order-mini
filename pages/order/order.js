@@ -56,11 +56,20 @@ Page({
             url: "/order",
             method: "POST",
             data:{
-                shopId:1588058446765236226,
+                shopId: "1588058446765236226",
                 remarks:this.data.remarks
             },
             callBack: result => {
                 console.log(result);
+                wx.requestPayment({
+                    timeStamp: result.data.timeStamp,
+                    nonceStr: result.data.nonceStr,
+                    package: result.data.packageValue,
+                    signType: 'RSA',
+                    paySign: result.data.paySign,
+                    success (res) { console.log(res);},
+                    fail (res) { console.log(res);}
+                  })
             }
         })
     },
