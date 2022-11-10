@@ -1,41 +1,43 @@
 {
-    "pages": [
-        "pages/index/index",
-        "pages/my/my",
-        "pages/logs/logs",
-        "pages/category/category",
-        "pages/order/order"
-    ],
-    "window": {
-        "backgroundTextStyle": "light",
-        "navigationBarBackgroundColor": "#fff",
-        "navigationBarTitleText": "皮蓬",
-        "navigationBarTextStyle": "black"
-    },
-    "style": "v2",
-    "tabBar": {
-        "custom": true,
-        "color": "#bbbbbb",
-        "selectedColor": "#3963BC",
-        "backgroundColor": "#ffffff",
-        "borderStyle": "white",
-        "list": [
-            {
-                "pagePath": "pages/index/index",
-                "text": "首页"
-            },
-            {
-                "pagePath": "pages/my/my",
-                "text": "我的"
-            }
-        ]
-    },
-    "usingComponents": {
-        "l-toast": "/miniprogram_npm/lin-ui/toast/index",
-        "l-message": "/miniprogram_npm/lin-ui/message/index",
-        "l-button": "/miniprogram_npm/lin-ui/button/index",
-        "content-title": "/components/content-title/index",
-        "content-card": "/components/content-card/index"
-    },
-    "sitemapLocation": "sitemap.json"
+  "pages": [
+    "pages/orderInfo/orderInfo",
+    "pages/index/index",
+    "pages/my/my",
+    "pages/logs/logs",
+    "pages/category/category",
+    "pages/order/order"
+    
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "皮蓬",
+    "navigationBarTextStyle": "black"
+  },
+  "style": "v2",
+  "tabBar": {
+    "custom": true,
+    "color": "#bbbbbb",
+    "selectedColor": "#3963BC",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "white",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/my/my",
+        "text": "我的"
+      }
+    ]
+  },
+  "usingComponents": {
+    "l-toast": "/miniprogram_npm/lin-ui/toast/index",
+    "l-message": "/miniprogram_npm/lin-ui/message/index",
+    "l-button": "/miniprogram_npm/lin-ui/button/index",
+    "content-title": "/components/content-title/index",
+    "content-card": "/components/content-card/index"
+  },
+  "sitemapLocation": "sitemap.json"
 }
