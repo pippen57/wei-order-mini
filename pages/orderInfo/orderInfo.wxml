@@ -1,7 +1,39 @@
-<view class='container'>
-  <view class='address-container'>
-    <view class="version-container">
-     与你
-    </view>
-  </view>
+<view class="container">
+	<view wx:if="{{apiOk && !orderList}}" class="no-order">
+		<view class="content-1">您还没有点餐</view>
+		<view class="content-2">快去犒劳一下自己吧！</view>
+		<view class="to-index-btn" bindtap="toIndexPage">去点餐</view>
+	</view>
+
+	<view wx:if="{{orderList}}" class="order-list">
+		<view class="a-order" wx:for="{{orderList}}" wx:key="index">
+			<navigator url="/pages/order-details/index?id={{item.id}}" class="weui-cell weui-cell_access" hover-class="none">
+				<van-cell  title="{{item.shopNameZt}}" value="{{item.statusStr}}" is-link />
+			</navigator>
+			<scroll-view class="goods-img-container" scroll-x="true">
+				<view class="img-box" wx:for="{{item.sku}}" wx:for-item='items' wx:key="{{items.id}}">
+					<image mode="aspectFill" src="{{items.pic}}" class="goods-img"></image>
+				</view>
+			</scroll-view>
+			<view class="order-info-box">
+				<view class="l">
+					<view>下单时间：{{item.createTime}}</view>
+					<view>订单编号：{{item.orderNumber}}</view>
+				</view>
+				<view class="r">
+          <text>¥</text>
+          {{item.amountReal}}
+          <view class="n">共3件</view>
+        </view>
+      
+			</view>
+			<view class="price-box">
+				<l-button wx:if="{{item.status > 0}}" type="primary" plain hairline  bind:click="callShop" data-shopid="{{item.shopIdZt}}">联系商家</l-button>
+				<l-button wx:if="{{item.status== -1}}" type="danger" plain hairline  bind:click="deleteOrder" data-id="{{item.id}}">删除订单</l-button>
+				<l-button custom-class="btn" wx:if="{{item.status== 0}}" type="warning" plain hairline bind:click="cancelOrderTap" data-id="{{item.id}}">关闭订单</l-button>
+				<l-button wx:if="{{item.status== 0}}" type="primary" plain hairline  bind:click="toPayTap" data-id="{{item.id}}" data-money="{{item.amountReal}}" data-score="{{item.score}}" style="position: relative; left: -29rpx; top: 0rpx">立即支付</l-button>
+			</view>
+		</view>
+	</view>
+	<view class="safeAreaOldMarginBttom safeAreaNewMarginBttom"></view>
 </view>
