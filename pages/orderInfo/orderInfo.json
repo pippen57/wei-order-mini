@@ -1,8 +1,8 @@
 {
   "navigationBarBackgroundColor": "#3963BC",
+  "navigationBarTitleText": "全部订单",
   "navigationBarTextStyle": "white",
   "usingComponents": {
-    "l-button":"/miniprogram_npm/lin-ui/button/index",
-    "content":"/components/content/index"
+    "l-card": "/miniprogram_npm/lin-ui/card/index"
   }
 }

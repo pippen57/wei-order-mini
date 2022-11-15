@@ -37,6 +37,8 @@
     "l-toast": "/miniprogram_npm/lin-ui/toast/index",
     "l-message": "/miniprogram_npm/lin-ui/message/index",
     "l-button": "/miniprogram_npm/lin-ui/button/index",
+    "van-cell": "@vant/weapp/cell/index",
+    "van-button": "@vant/weapp/button/index",
     "content-title": "/components/content-title/index",
     "content-card": "/components/content-card/index"
   },

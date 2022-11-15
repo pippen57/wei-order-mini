@@ -5,7 +5,51 @@ Page({
    * 页面的初始数据
    */
   data: {
-
+    orderList:[{
+      id:123454345,
+      shopNameZt:"萨默尔面馆",
+      statusStr:"待支付",
+      createTime:"2022-11-14 20:25:45",
+      orderNumber:"SA567876567876567876567876567",
+      amountReal:"13.1",
+      sku:[{id:123212,pic:"https://peng.pippen.top/wei-order/20221028/e5fb4b6d39c240f78f58549120c2260e.jpeg"},
+      {id:123232,pic:"https://peng.pippen.top/wei-order/20221028/e5fb4b6d39c240f78f58549120c2260e.jpeg"},
+      {id:123242,pic:"https://peng.pippen.top/wei-order/20221028/e5fb4b6d39c240f78f58549120c2260e.jpeg"}],
+      status:0
+    },{
+      id:123454345,
+      shopNameZt:"萨默尔面馆（协同店）",
+      statusStr:"待支付",
+      createTime:"2022-11-14 20:25:45",
+      orderNumber:"SA567876567876567876567876567",
+      sku:[{id:123212,pic:"https://peng.pippen.top/wei-order/20221028/e5fb4b6d39c240f78f58549120c2260e.jpeg"},
+      {id:123232,pic:"https://peng.pippen.top/wei-order/20221028/e5fb4b6d39c240f78f58549120c2260e.jpeg"},
+      {id:123242,pic:"https://peng.pippen.top/wei-order/20221028/e5fb4b6d39c240f78f58549120c2260e.jpeg"}],
+      amountReal:"13.1",
+      status:0
+    },{
+      id:123454345,
+      shopNameZt:"萨默尔面馆（协同店）",
+      statusStr:"待支付",
+      createTime:"2022-11-14 20:25:45",
+      orderNumber:"SA567876567876567876567876567",
+      sku:[{id:123212,pic:"https://peng.pippen.top/wei-order/20221028/e5fb4b6d39c240f78f58549120c2260e.jpeg"},
+      {id:123232,pic:"https://peng.pippen.top/wei-order/20221028/e5fb4b6d39c240f78f58549120c2260e.jpeg"},
+      {id:123242,pic:"https://peng.pippen.top/wei-order/20221028/e5fb4b6d39c240f78f58549120c2260e.jpeg"}],
+      amountReal:"13.1",
+      status:0
+    },{
+      id:123454345,
+      shopNameZt:"萨默尔面馆（协同店）",
+      statusStr:"待支付",
+      createTime:"2022-11-14 20:25:45",
+      orderNumber:"SA567876567876567876567876567",
+      sku:[{id:123212,pic:"https://peng.pippen.top/wei-order/20221028/e5fb4b6d39c240f78f58549120c2260e.jpeg"},
+      {id:123232,pic:"https://peng.pippen.top/wei-order/20221028/e5fb4b6d39c240f78f58549120c2260e.jpeg"},
+      {id:123242,pic:"https://peng.pippen.top/wei-order/20221028/e5fb4b6d39c240f78f58549120c2260e.jpeg"}],
+      amountReal:"13.1",
+      status:0
+    }]
   },
 
   /**
