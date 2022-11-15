@@ -1,5 +1,8 @@
 {
   "navigationBarBackgroundColor": "#3963BC",
   "navigationBarTextStyle": "white",
-  "usingComponents": {}
+  "usingComponents": {
+    "l-button":"/miniprogram_npm/lin-ui/button/index",
+    "content":"/components/content/index"
+  }
 }

@@ -85,7 +85,6 @@ page {
     padding-right: 20rpx;
     height: 100%;
     position: fixed;
-    /* top: 10rpx; */
     right: 0;
   }
   .card {

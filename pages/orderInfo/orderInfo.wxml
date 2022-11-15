@@ -1,7 +1,12 @@
 <view class='container'>
-  <view class='address-container'>
-    <view class="version-container">
-     与你
-    </view>
-  </view>
+    <content-card>
+        <view style="text-align: center; display: inline-block; position: relative; left: 307rpx; top: 0rpx">待支付</view>
+        <text style="display: inline-block; position: relative; left: 46rpx; top: 44rpx">剩余支付时间</text>
+        <view>
+            <l-button size="mini" shape="circle" type="default" style="position: relative; left: 355rpx; top: 76rpx">立即支付</l-button>
+        </view>
+        <view style="position: relative; left: 0rpx; top: 40rpx; width: 334rpx; height: 60rpx; display: block; box-sizing: border-box">
+            <l-button size="mini" shape="circle" plain="{{true}}" style="position: relative; left: 180rpx; top: -27rpx">取消支付</l-button>
+        </view>
+  </content-card>
 </view>

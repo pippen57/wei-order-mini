@@ -1,6 +1,7 @@
 <view class="content-card">
-  <view>
+  <view class="card-top">
     <view class="card-top-left">
+      <view class="card-dot"></view>
       <view class="content-name">{{name}}</view>
     </view>
     <slot name="top-right" />

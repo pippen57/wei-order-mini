@@ -1,17 +1,18 @@
 {
   "pages": [
-    "pages/orderInfo/orderInfo",
+    
     "pages/index/index",
     "pages/my/my",
     "pages/logs/logs",
     "pages/category/category",
+    "pages/orderInfo/orderInfo",
     "pages/order/order"
     
   ],
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",
-    "navigationBarTitleText": "皮蓬",
+    "navigationBarTitleText": "WORDER",
     "navigationBarTextStyle": "black"
   },
   "style": "v2",
