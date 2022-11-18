@@ -1,62 +1,161 @@
 // pages/orderInfo/orderInfo.js
+var http = require("../../utils/http");
+var app = getApp();
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-    orderList:[{
-      id:123454345,
-      shopNameZt:"萨默尔面馆",
-      statusStr:"待支付",
-      createTime:"2022-11-14 20:25:45",
-      orderNumber:"SA567876567876567876567876567",
-      amountReal:"13.1",
-      sku:[{id:123212,pic:"https://peng.pippen.top/wei-order/20221028/e5fb4b6d39c240f78f58549120c2260e.jpeg"},
-      {id:123232,pic:"https://peng.pippen.top/wei-order/20221028/e5fb4b6d39c240f78f58549120c2260e.jpeg"},
-      {id:123242,pic:"https://peng.pippen.top/wei-order/20221028/e5fb4b6d39c240f78f58549120c2260e.jpeg"}],
-      status:0
-    },{
-      id:123454345,
-      shopNameZt:"萨默尔面馆（协同店）",
-      statusStr:"待支付",
-      createTime:"2022-11-14 20:25:45",
-      orderNumber:"SA567876567876567876567876567",
-      sku:[{id:123212,pic:"https://peng.pippen.top/wei-order/20221028/e5fb4b6d39c240f78f58549120c2260e.jpeg"},
-      {id:123232,pic:"https://peng.pippen.top/wei-order/20221028/e5fb4b6d39c240f78f58549120c2260e.jpeg"},
-      {id:123242,pic:"https://peng.pippen.top/wei-order/20221028/e5fb4b6d39c240f78f58549120c2260e.jpeg"}],
-      amountReal:"13.1",
-      status:0
-    },{
-      id:123454345,
-      shopNameZt:"萨默尔面馆（协同店）",
-      statusStr:"待支付",
-      createTime:"2022-11-14 20:25:45",
-      orderNumber:"SA567876567876567876567876567",
-      sku:[{id:123212,pic:"https://peng.pippen.top/wei-order/20221028/e5fb4b6d39c240f78f58549120c2260e.jpeg"},
-      {id:123232,pic:"https://peng.pippen.top/wei-order/20221028/e5fb4b6d39c240f78f58549120c2260e.jpeg"},
-      {id:123242,pic:"https://peng.pippen.top/wei-order/20221028/e5fb4b6d39c240f78f58549120c2260e.jpeg"}],
-      amountReal:"13.1",
-      status:0
-    },{
-      id:123454345,
-      shopNameZt:"萨默尔面馆（协同店）",
-      statusStr:"待支付",
-      createTime:"2022-11-14 20:25:45",
-      orderNumber:"SA567876567876567876567876567",
-      sku:[{id:123212,pic:"https://peng.pippen.top/wei-order/20221028/e5fb4b6d39c240f78f58549120c2260e.jpeg"},
-      {id:123232,pic:"https://peng.pippen.top/wei-order/20221028/e5fb4b6d39c240f78f58549120c2260e.jpeg"},
-      {id:123242,pic:"https://peng.pippen.top/wei-order/20221028/e5fb4b6d39c240f78f58549120c2260e.jpeg"}],
-      amountReal:"13.1",
-      status:0
-    }]
+    orderList:[]
   },
+  orderListHandler(){
+    http.request({
+        url: "/order",
+        method: "GET",
+        callBack: result => {
+            console.log(result);
+            result.data.list.forEach(ele => {
+              if (ele.order.status == 1) {
+                ele.order.statusStr = '待付款'
+              }
+              if (ele.order.status == 3 && ele.order.isPayed == 1) {
+                ele.order.statusStr = '支付成功'
+              }
+              if (ele.order.status == 4) {
+                if(ele.order.closeType== 1){
+                  ele.order.statusStr = '超时未支付'
+                }
+                if(ele.order.closeType== 4){
+                  ele.order.statusStr = '买家取消'
+                }
+                
+              }
+            })
+            this.setData({
+              orderList: result.data.list,
+              total:result.data.total
+            })
+        }
+    })
+},
+/**
+ * 关闭订单
+ */
+cencelOrderHandler(e){
+  const id = e.currentTarget.dataset.id
 
+  wx.showModal({
+    title: '确定要取消该订单吗？',
+    content: '',
+    success: function (res) {
+      if (res.confirm) {
+        http.request({
+          url: "/order/cencel_order",
+          method: "GET",
+          data:{orderId:id},
+          callBack: result => {
+              console.log(result);
+          }
+      })
+      }else{
+        console.log('用户点击取消');
+      }
+
+    }
+  })
+},
+toPayTap(e){
+  const orderNumber = e.currentTarget.dataset.ordernumber
+  console.log(orderNumber);
+  wx.showModal({
+    title: '确定要支付该订单吗？',
+    content: '',
+    success: function (res) {
+      if (res.confirm) {
+        http.request({
+          url: "/order/pay/"+orderNumber,
+          method: "GET",
+          callBack: result => {
+              console.log(result);
+              wx.requestPayment({
+                timeStamp: result.data.timeStamp,
+                nonceStr: result.data.nonceStr,
+                package: result.data.packageValue,
+                signType: 'RSA',
+                paySign: result.data.paySign,
+                success (res) { console.log(res);},
+                fail (res) { console.log(res);}
+              })
+          }
+      })
+      }else{
+        console.log('用户点击取消');
+      }
+
+    }
+  })
+},
+/**
+ * 删除订单
+ */
+deleteOrderHandler(e){
+  const id = e.currentTarget.dataset.id
+  const that = this
+  wx.showModal({
+    title: '提示',
+    content: '确定要删除该订单吗？',
+    success: function (res) {
+      if (res.confirm) {
+        http.request({
+          url: "/order?orderId="+id,
+          method: "DELETE",
+          callBack: result => {
+            that.orderListHandler()
+          }
+        })
+      }else{
+        console.log('用户点击取消');
+      }
+
+    }
+  })
+
+},
+ callShop(e) {
+  const shop = e.currentTarget.dataset.shop
+  if(shop){
+    wx.makePhoneCall({
+      phoneNumber: shop.tel,
+    })
+  }
+
+},
+toDetails(e){
+  const order = e.currentTarget.dataset.order
+  console.log(order);
+  wx.navigateTo({
+    url: '/pages/order-details/index',
+    events: {
+      // 为指定事件添加一个监听器，获取被打开页面传送到当前页面的数据
+      acceptDataFromOpenedPage: function(data) {
+        console.log(data)
+      },
+      someEvent: function(data) {
+        console.log(data)
+      }
+    },
+    success: function(res) {
+      // 通过 eventChannel 向被打开页面传送数据
+      res.eventChannel.emit('acceptDataFromOpenerPage', { data: order })
+    }
+  })
+},
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
-
+    this.orderListHandler()
   },
 
   /**
@@ -70,7 +169,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow() {
-
+    
   },
 
   /**

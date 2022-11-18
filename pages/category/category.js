@@ -25,6 +25,7 @@ Page({
         allProperties: [],
         skuGroup: {},
         propKeys: [],
+        peisongType:'',
         // 购物车数据
         trolleyList: [{
             id: "221111",

@@ -36,7 +36,7 @@ Page({
     },
     preOrder(){
         http.request({
-            url: "/order",
+            url: "/order/pre_order",
             method: "GET",
             callBack: result => {
                 console.log(result);

@@ -7,7 +7,7 @@
      与你
     </view>
   </view>
-
+  <navigator url="/pages/orderInfo/orderInfo" class="weui-cell weui-cell_access" hover-class="none">
   <view class='address-container'  style="width: 690rpx; height: 100rpx; display: flex; box-sizing: border-box">
     <l-icon name='order' class='dot' />
     <view class='doc-container' bindtap='copyLink'>
@@ -15,6 +15,7 @@
     </view>
     <l-icon class="dot-right" name='right'  size='20'/>
   </view>
+  </navigator>
   <view class='address-container' style="width: 690rpx; height: 100rpx; display: flex; box-sizing: border-box">
     <l-icon name='user' class='dot' />
     <view class='doc-container' bindtap='copyLink' >

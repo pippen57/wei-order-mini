@@ -169,7 +169,7 @@ margin-bottom: 20rpx;
 .order-info-box .r {
   margin-right: 24rpx;
   color: #e64340;
-  font-size: 58rpx;
+  font-size: 48rpx;
 }
 .order-info-box .r text {
   font-size: 26rpx;

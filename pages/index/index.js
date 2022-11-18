@@ -31,7 +31,7 @@ Page({
     } = e.target.dataset;
     if(navigatemark==='diancan'){
         wx.navigateTo({
-            url: '/pages/category/category',
+            url: '/pages/category/index',
             success: function(res) {
               // 通过 eventChannel 向被打开页面传送数据
               res.eventChannel.emit('acceptDataFromOpenerPage', { data: 'test' })

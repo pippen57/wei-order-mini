@@ -1,0 +1,9 @@
+{
+  "navigationBarBackgroundColor": "#3963BC",
+  "navigationBarTitleText": "订单详情",
+    "usingComponents": {
+      "van-button": "@vant/weapp/button/index",
+      "van-cell": "@vant/weapp/cell/index",
+      "van-icon":"@vant/weapp/icon/index"
+    }
+}
