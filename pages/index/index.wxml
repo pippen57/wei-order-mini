@@ -1,5 +1,4 @@
 
-<l-tab-bar list="{{list}}" />
 <view class="container">
   <view class="header">
     <image class='header-bg' src='/images/index_bg.png' style="position: absolute; left: 0rpx; top: 0rpx"></image>

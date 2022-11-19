@@ -7,7 +7,11 @@ Page({
      * 页面的初始数据
      */
     data: {
-      peisongType:'ts'
+      peisongType:'ts',
+      showCartPop: false, // 是否显示购物车列表
+      showGoodsDetailPOP: false, // 是否显示商品详情
+      shopIsOpened: false, // 是否营业
+  
     },
 
     /**
@@ -52,8 +56,27 @@ Page({
       }
   })
   },
+   /**
+   * 显示商品规格选择
+   */
+  showProdDetail(e) {
+    const index = e.currentTarget.dataset.idx
+    console.log(index);
 
-
+    this.setData({
+      showGoodsDetailPOP: true
+    })
+    // this._showGoodsDetailPOP(goodsId)
+    // this.goodsAddition(goodsId)
+  },
+  /**
+   * 隐藏商品规格选择
+   */
+  hideProdDetail() {
+    this.setData({
+      showGoodsDetailPOP: false
+    })
+  },
   // 显示分类和商品数量徽章
   processBadge() {
     const categories = this.data.categories

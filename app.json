@@ -17,31 +17,24 @@
     },
     "style": "v2",
     "tabBar": {
-        "custom": true,
-        "color": "#bbbbbb",
-        "selectedColor": "#3963BC",
-        "backgroundColor": "#ffffff",
-        "borderStyle": "white",
+      "custom": true,
+      "color": "#000000",
+      "selectedColor": "#000000",
+      "backgroundColor": "#000000",
         "list": [
             {
-                "pagePath": "pages/index/index",
-                "text": "首页"
+                "pagePath": "pages/index/index"
             },
             {
-                "pagePath": "pages/my/my",
-                "text": "我的"
+                "pagePath": "pages/my/my"
             }
         ]
     },
     "usingComponents": {
-        "l-toast": "/miniprogram_npm/lin-ui/toast/index",
-        "l-message": "/miniprogram_npm/lin-ui/message/index",
-        "l-button": "/miniprogram_npm/lin-ui/button/index",
         "van-cell": "@vant/weapp/cell/index",
         "van-button": "@vant/weapp/button/index",
         "content-title": "/components/content-title/index",
         "content-card": "/components/content-card/index",
-
         "van-sidebar": "@vant/weapp/sidebar/index",
         "van-sidebar-item": "@vant/weapp/sidebar-item/index",
         "van-swipe-cell": "@vant/weapp/swipe-cell/index",
@@ -55,7 +48,6 @@
         "van-icon": "@vant/weapp/icon/index",
         "van-empty": "@vant/weapp/empty/index",
         "van-field": "@vant/weapp/field/index",
-
         "van-cell-group": "@vant/weapp/cell-group/index",
         "van-dialog": "@vant/weapp/dialog/index",
         "van-overlay": "@vant/weapp/overlay/index",

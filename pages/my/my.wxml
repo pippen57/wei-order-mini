@@ -9,25 +9,29 @@
   </view>
   <navigator url="/pages/orderInfo/orderInfo" class="weui-cell weui-cell_access" hover-class="none">
   <view class='address-container'  style="width: 690rpx; height: 100rpx; display: flex; box-sizing: border-box">
-    <l-icon name='order' class='dot' />
+
+    <van-icon name="cart-o"   class='dot' />
     <view class='doc-container' bindtap='copyLink'>
       <text class='doc-txt'>我的订单</text>
     </view>
-    <l-icon class="dot-right" name='right'  size='20'/>
+    <van-icon class="dot-right" name="arrow"  size='20' />
   </view>
   </navigator>
   <view class='address-container' style="width: 690rpx; height: 100rpx; display: flex; box-sizing: border-box">
-    <l-icon name='user' class='dot' />
+
+    <van-icon name="contact" class='dot' />
     <view class='doc-container' bindtap='copyLink' >
       <text class='doc-txt'>个人资料</text>
     </view>
-    <l-icon class="dot-right" name='right'  size='20'/>
+    <van-icon class="dot-right" name="arrow"  size='20' />
   </view>
   <view class='address-container' style="width: 690rpx; height: 100rpx; display: flex; box-sizing: border-box">
-    <l-icon name='customer-service' class='dot' />
+
+    <van-icon name="info-o"  class='dot'/>
     <view class='doc-container' bindtap='copyLink' >
       <text class='doc-txt'>关于</text>
     </view>
-    <l-icon class="dot-right" name='right' size='20' />
+    <!-- <van-icon class="dot-right" name='right' size='20' /> -->
+    <van-icon class="dot-right" name="arrow"  size='20' />
   </view>
 </view>

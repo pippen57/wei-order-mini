@@ -1,6 +1,4 @@
-<view wx:if="{{noticeLastOne}}" class="notice">
-  <van-notice-bar mode="link" left-icon="volume-o" text="{{noticeLastOne.title}}" bind:click="goNotice" data-id="{{noticeLastOne.id}}" />
-</view>
+
 <view wx:if="{{ !scanDining }}" class="box">
   <view class="shop-name">
     <view class="name" bindtap="selectshop">萨默尔面馆（协同店）</view>
@@ -19,6 +17,9 @@
     </navigator>
   </view>
 </view>
+<view wx:if="{{noticeLastOne}}" class="notice">
+  <van-notice-bar mode="link" left-icon="volume-o" text="{{noticeLastOne.title}}" bind:click="goNotice" data-id="{{noticeLastOne.id}}" />
+</view>
 <view class="box1">
   <view class="box-1">
     <van-sidebar>
@@ -32,11 +33,13 @@
       </swiper-item>
     </swiper>
     <van-empty wx:if="{{!goods || goods.length == 0}}" description="暂无商品" />
-    <van-card wx:for="{{goods}}" wx:key="id" centered="true" lazy-load="true"
-     price="{{item.price}}" thumb-mode="aspectFill" tag="{{ item.badge ? item.badge : '' }}" desc="{{item.characteristic}}" title="{{item.productName}}" thumb="{{item.pic}}">
+    <van-card wx:for="{{goods}}" wx:key="id" centered="true" lazy-load="true"  price="{{item.price}}"
+     thumb-mode="aspectFill" tag="{{ item.badge ? item.badge : '' }}"
+     desc="{{item.characteristic}}" title="{{item.productName}}" thumb="{{item.pic}}">
+
       <view class="goods-btn" slot="footer">
-        <van-button wx:if="{{item.skuList.length>1}}" size="small" color="#3963BC" round data-idx="{{index}}" bind:click="showGoodsDetailPOP">选规格</van-button>
-        <van-icon wx:else name="add" color="#3963BC" size="50rpx" data-idx="{{index}}" bind:click="addCart1" />
+        <van-tag  wx:if="{{item.skuList.length>1}}" color="#3963BC"  size="large" data-idx="{{item}}" bindtap="showProdDetail">选规格</van-tag>
+        <van-icon wx:else name="add" color="#3963BC" size="50rpx" data-idx="{{item}}" bindtap="addCart" />
       </view>
     </van-card>
   </scroll-view>
@@ -57,7 +60,7 @@
 
 
 
-<van-popup show="{{ showGoodsDetailPOP }}" custom-style="max-height: 80%;z-index:99999;" closeable close-icon="close" position="bottom" bind:close="hideGoodsDetailPOP">
+<van-popup show="{{ showGoodsDetailPOP }}" custom-style="max-height: 80%;z-index:99999;" closeable close-icon="close" position="bottom" bind:close="hideProdDetail">
   <image wx:if="{{ showGoodsDetailPOP }}" mode='aspectFill' class='photos-00' src='{{curGoodsMap.basicInfo.pic}}'></image>
   <view class="title-name">{{curGoodsMap.basicInfo.name}}</view>
   <view wx:for="{{curGoodsMap.properties}}" wx:key="id" class="content-1">

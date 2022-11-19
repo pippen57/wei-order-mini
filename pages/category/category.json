@@ -2,13 +2,5 @@
     "navigationBarBackgroundColor": "#3963BC",
     "navigationBarTextStyle": "white",
     "usingComponents": {
-        "l-card": "/miniprogram_npm/lin-ui/card/index",
-        "l-button": "/miniprogram_npm/lin-ui/button/index",
-        "l-dialog": "/miniprogram_npm/lin-ui/dialog/index",
-        "l-counter": "/miniprogram_npm/lin-ui/counter/index",
-        "l-badge": "/miniprogram_npm/lin-ui/badge/index",
-        "l-spin": "/miniprogram_npm/lin-ui/spin/index",
-        "l-popup": "/miniprogram_npm/lin-ui/popup/index",
-        "l-loading": "/miniprogram_npm/lin-ui/popup/index"
     }
 }

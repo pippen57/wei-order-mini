@@ -3,6 +3,5 @@
   "navigationBarTitleText": "全部订单",
   "navigationBarTextStyle": "white",
   "usingComponents": {
-    "l-card": "/miniprogram_npm/lin-ui/card/index"
   }
 }

@@ -27,38 +27,16 @@
 </view>
 
 
-<view class="box1">
-  <view class="box-1">
-    <van-sidebar>
-      <van-sidebar-item wx:for="{{categories}}" wx:key="id" title="{{item.name}}" badge="{{ item.badge ? item.badge : '' }}" data-idx="{{index}}" bind:click="categoryClick" />
-    </van-sidebar>
-  </view>
-  <scroll-view class="box-2" scroll-y="true" scroll-top="{{scrolltop}}" bindscrolltolower="_onReachBottom">
-    <!-- <swiper wx:if="{{banners}}" class="swiper1" indicator-dots="true" autoplay circular>
-      <swiper-item wx:for="{{banners}}" wx:key="id">
-        <image mode="aspectFill" bindtap="tapBanner" data-url="{{item.linkUrl}}" src="{{item.picUrl}}" />
-      </swiper-item>
-    </swiper> -->
-    <van-empty wx:if="{{!goods || goods.length == 0}}" description="暂无商品" />
-    <van-card wx:for="{{goods}}" wx:key="id" centered="true" lazy-load="true" origin-price="{{item.originalPrice > 0 ? item.originalPrice : ''}}"
-     price="{{item.minPrice}}" thumb-mode="aspectFill" tag="{{ item.badge ? item.badge : '' }}" desc="{{item.characteristic}}" title="{{item.name}}" thumb="{{item.pic}}">
-      <view class="goods-btn" slot="footer">
-        <van-button wx:if="{{item.propertyIds || item.hasAddition}}" size="small" color="#e64340" round data-idx="{{index}}" bind:click="showGoodsDetailPOP">选规格</van-button>
-        <van-icon wx:else name="add" color="#e64340" size="50rpx" data-idx="{{index}}" bind:click="addCart1" />
-      </view>
-    </van-card>
-  </scroll-view>
-</view>
 <!-- 左侧导航 -->
 <view class="header-container">
     <view wx:if="{{!showLoading}}">
-        <!-- <view class='tui-fixed-left'>
+        <view class='tui-fixed-left'>
             <scroll-view class='tui-city-scroll' scroll-x="true" scroll-y="true" style='height:100%;' scroll-with-animation="true" scroll-top="{{leftMenuTop}}">
                 <text class="menu-item {{index === currentActiveIndex ? 'menu-active' : ''}}" wx:for="{{navList}}" wx:key="unique" data-index="{{index}}" id='{{index}}' catchtap='changeMenu'>{{item.categoryName}}</text>
             </scroll-view>
-        </view> -->
+        </view>
         <!-- 右侧滚动商品 -->
-        <!-- <view class='content'>
+        <view class='content'>
             <scroll-view class='tui-city-scroll-y' scroll-y="true" style='height:92%;' scroll-with-animation="true" scroll-top="{{rightProTop}}" bindscroll="scroll">
                 <view class='pro-item' wx:for="{{navList}}" wx:key="unique">
                     <view class='tui-list-head' id='NAV{{index}}'>{{item.categoryName}}</view>
@@ -79,7 +57,7 @@
 
                 </view>
             </scroll-view>
-        </view> -->
+        </view>
 
         <!-- popup -->
         <l-popup show="{{popupShow}}" animation="{{true}}" contentAlign="bottom" locked="{{false}}">

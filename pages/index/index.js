@@ -7,22 +7,11 @@ Page({
     motto: 'Hello World',
     userInfo: {},
     hasUserInfo: false,
-    list:[
-        {
-            pagePath:"/pages/index/index",
-            text:"首页",
-            iconPath:"/icons/index.png",
-            selectedIconPath:"/icons/index-selected.png"
-        },
-        {
-            pagePath:"/pages/my/my",
-            text:"我的",
-            iconPath:"/icons/my.png",
-            selectedIconPath:"/icons/my-selected.png"
-        }
-    ],
     canIUse: wx.canIUse('button.open-type.getUserInfo')
   },
+  onShow() {
+		this.getTabBar().init();
+	},
   //事件处理函数
   onNaviCard(e) {
     let {
