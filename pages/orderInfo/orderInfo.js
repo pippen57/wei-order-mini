@@ -56,6 +56,15 @@ cencelOrderHandler(e){
           data:{orderId:id},
           callBack: result => {
               console.log(result);
+              if(result.code==0){
+
+                wx.showToast({
+                  title: '取消订单成功',
+                  icon: 'success'
+                })
+                that.orderListHandler()
+              }
+             
           }
       })
       }else{
@@ -111,7 +120,15 @@ deleteOrderHandler(e){
           url: "/order?orderId="+id,
           method: "DELETE",
           callBack: result => {
-            that.orderListHandler()
+            if(result.code==0){
+
+              wx.showToast({
+                title: '删除订单成功',
+                icon: 'success'
+              })
+              that.orderListHandler()
+            }
+            
           }
         })
       }else{

@@ -5,20 +5,6 @@ Page({
      * 页面的初始数据
      */
     data: {
-        list:[
-            {
-                pagePath:"/pages/index/index",
-                text:"首页",
-                iconPath:"/icons/index.png",
-                selectedIconPath:"/icons/index-selected.png"
-            },
-            {
-                pagePath:"/pages/my/my",
-                text:"我的",
-                iconPath:"/icons/my.png",
-                selectedIconPath:"/icons/my-selected.png"
-            }
-        ],
     },
 
     /**

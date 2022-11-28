@@ -1,40 +1,83 @@
-<!--pages/order/order.wxml-->
-<view>
-    <view class="navi-card" style=" height: 130rpx; display: flex; margin-left: 15rpx">
-        <text style="width: 668rpx; height: 66rpx; display: block; box-sizing: border-box; position: relative; left: 0rpx; top: -15rpx; line-height: 86rpx; color: black; font-weight: 400; font-size: 35rpx">萨默尔面馆</text>
-        <view style="position: relative; width: 152rpx; color: #d3d3d3; height: 48rpx; display: block; box-sizing: border-box; left: -258rpx; top: -9rpx">
-            17.5km >
-        </view>
+<van-cell icon="location-o" title="{{shopInfo.name}} / 距离您{{shopInfo.distance}}km" label="{{shopInfo.address}}" is-link url="/pages/shop/select?type=pay" />
+<view class="pay-bar">
+	<view class="way-bar">
+		<view class="peisong ziqu {{peisongType == 'ts' ? 'active' : ''}}" bindtap="selected" data-pstype="ts">
+			<van-icon name="shop-collect-o" color="{{peisongType == 'ts' ? '#fff' : '#3963BC'}}" />
+			<view class="ziqu-1">门店堂食</view>
+		</view>
+		<view class="peisong ziqu {{peisongType == 'db' ? 'active' : ''}}" bindtap="selected" data-pstype="db">
+			<van-icon name="logistics" color="{{peisongType == 'db' ? '#fff' : '#3963BC'}}" />
+			<view class="ziqu-1">打包带走</view>
+		</view>
+	</view>
+	<van-divider dashed />
 
-    </view>
-
-    <view class="navi-card" style=" display: flex; margin-left: 15rpx">
-        <view style="width: 720rpx;  position: relative; left: 0rpx;  display: block; box-sizing: border-box;">
-            <view style="width: 740rpx; padding-left: 20rpx; height: 170rpx; display: block; box-sizing: border-box" wx:for="{{trolleyList}}" wx:key="unique">
-                <image style="width: 120rpx; height: 120rpx; padding-top: 20rpx" class="image-style" src="{{item.sku.pic?item.sku.pic:item.product.pic}}" />
-                <text style="width: auto; height: 120rpx; margin-left: 200rpx; position: relative; left: 146rpx; top: -134rpx;color: black;">
-                    {{item.product.productName}}</text>
-                <text style="width: auto; height: 120rpx; margin-left: 200rpx; position: relative; left: 146rpx; top: -134rpx;font-size: x-small;">
-                    {{item.sku.skuName}}</text>
-                <text style="width: auto; height: 120rpx; margin-left: 200rpx; position: relative; left: 146rpx; top: -127rpx">
-                    ×{{item.quantity}}</text>
-                <view style="padding-left: 150rpx; width: 242rpx; height: 54rpx; display: block; box-sizing: border-box; position: relative; left: 443rpx; top: -164rpx; color: red; font-size: 40rpx">¥{{item.sku.price}}</view>
-            </view>
-        </view>
-    </view>
-    <view class="navi-card" style="height: 258rpx; display: flex; margin-left: 15rpx">
-        <text style="width: 668rpx; height: 66rpx; display: block; box-sizing: border-box; color: black; font-weight: 400; font-size: 35rpx; position: relative; left: 0rpx; top: -78rpx">
-            订单备注</text>
-        <textarea bindinput="bindTextAreaBlur" auto-height placeholder="自动变高" />
-    </view>
-    <view style="height: 258rpx; display: flex; margin-left: 15rpx"></view>
+	<van-field
+    model:value="{{ mobile }}"
+    label="联系电话"
+		type="number"
+		clearable
+		focus
+    placeholder="请输入手机号码">
+		<van-button slot="button" size="small" color="#3963BC" open-type="getPhoneNumber" bind:getphonenumber="getPhoneNumber">重新获取</van-button>
+  </van-field>
+	<van-cell
+	 	title="取餐时间"
+		value="{{ diningTime ? diningTime : '请选择' }}"
+		is-link
+		bind:click="diningTimeShow"
+	/>
+	<van-divider dashed />
 </view>
-<view style="position:fixed;bottom:0;width: 100%;background-color: white;height: 150rpx;border-radius:8rpx">
-    <text style="float: left; margin-left: 30rpx;margin-top: 25rpx;">实付金额
-    </text>
-    <text style="float: left; margin-left: 30rpx;margin-top: 15rpx; font-size: x-large;">¥{{totalMoney}}
-    </text>
-    <l-button style="float: right; margin-right: 30rpx;margin-top: 15rpx;" shape="semicircle" bindtap="confirmOrder">确认付款</l-button>
 
+<view class="goods-title">商品明细</view>
+<van-row custom-class="detail" wx:for="{{trolleyList}}" wx:key="index">
+	<van-col span="18">
+		<view class="detail-1">{{item.product.productName}}</view>
+		<view class="goods-label">{{item.label}}
+			<block >
+				{{item.sku.skuName}}
+			</block>
+		</view>
+	</van-col>
+	<van-col span="3" class="num">x{{item.quantity}}</van-col>
+	<van-col span="3" class="price">¥{{item.product.price}}</van-col>
+</van-row>
 
-</view>
+<view class="amount">共计 {{totalCount}} 件商品，小计：¥ {{totalMoney}}</view>
+
+<van-field label="备注" value="{{remark}}" clearable input-align="right" placeholder="如需备注请输入" bindblur="remarkChange" />
+<view class="bottom"></view>
+<van-submit-bar
+	price="{{ totalMoney*100 }}"
+	button-text="立即支付"
+	bind:submit="confirmOrder"
+	button-class="pay-btn"
+/>
+<!-- <van-submit-bar
+  wx:else
+	price="{{ amountReal*100 }}"
+	button-text="授权登陆"
+	bind:submit="updateUserInfo"
+	button-class="pay-btn"
+/> -->
+
+<van-popup
+  show="{{ diningTimeShow }}"
+	position="bottom"
+	round
+  bind:close="diningTimeHide"
+>
+<van-datetime-picker
+  type="time"
+	value="{{ currentDate }}"
+	min-hour="{{ minHour }}"
+	max-hour="{{ 22 }}"
+	min-minute="{{ minMinute }}"
+	formatter="{{ formatter }}"
+	filter="{{ filter }}"
+	bind:change="diningTimeChange"
+  bind:cancel="diningTimeHide"
+  bind:confirm="diningTimeConfirm"
+/>
+</van-popup>

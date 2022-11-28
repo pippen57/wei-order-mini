@@ -7,7 +7,11 @@
         "pages/orderInfo/orderInfo",
         "pages/order/order",
         "pages/order-details/index",
-        "pages/category/index"
+        "pages/category/index",
+        "pages/shop/select"
+    ],
+    "requiredPrivateInfos":[
+      "getLocation"
     ],
     "window": {
         "backgroundTextStyle": "light",
@@ -15,12 +19,11 @@
         "navigationBarTitleText": "WORDER",
         "navigationBarTextStyle": "black"
     },
-    "style": "v2",
     "tabBar": {
-      "custom": true,
-      "color": "#000000",
-      "selectedColor": "#000000",
-      "backgroundColor": "#000000",
+        "custom": true,
+        "color": "#000000",
+        "selectedColor": "#000000",
+        "backgroundColor": "#000000",
         "list": [
             {
                 "pagePath": "pages/index/index"
@@ -61,6 +64,7 @@
         "van-tag": "@vant/weapp/tag/index",
         "van-goods-action": "@vant/weapp/goods-action/index",
         "van-goods-action-icon": "@vant/weapp/goods-action-icon/index",
+        "van-toast": "@vant/weapp/toast/index",
         "van-goods-action-button": "@vant/weapp/goods-action-button/index"
     },
     "sitemapLocation": "sitemap.json"

@@ -46,7 +46,7 @@
                                 <image class="image-style" src="{{items.pic}}" />
                                 <view style="position: relative; left: 175rpx; top: -168rpx; width: 100%; height: 58rpx; display: block; color: #3963BC; font-size: large; box-sizing: border-box">
                                     {{items.productName}}</view>
-                                <l-button size="mini" shape="semicircle" style="position: relative; left: 371rpx; top: -147rpx">选规格</l-button>
+                                <van-button  >选规格</van-button>
 
                                 <view style="position: relative; left: 176rpx; top: -208rpx; width: 191rpx; height: 58rpx; display: block; color: red; font-size: large; box-sizing: border-box">¥{{items.price}}/份</view>
                             </view>
@@ -60,7 +60,7 @@
         </view>
 
         <!-- popup -->
-        <l-popup show="{{popupShow}}" animation="{{true}}" contentAlign="bottom" locked="{{false}}">
+        <van-popup show="{{popupShow}}" animation="{{true}}" contentAlign="bottom" locked="{{false}}">
             <view class='center'>
                 <image style="position: relative;border-radius: 18rpx;  width: 100%; height: 490rpx; display: inline-block; box-sizing: border-box; left: 0rpx; top: 0rpx" src="{{popupObj.pic}}" />
 
@@ -80,29 +80,29 @@
                     </block>
                 </view>
                 <view style=" width: 100%; background: #d3d3d3; height: 1px;  position: fixed;bottom: 140rpx;"></view>
-                <l-counter style="position: fixed;bottom: 55rpx;" l-class="count" min="1" count="1" max="99" step="1" bind:linchange="onCounterChange" />
+                <!-- <l-counter style="position: fixed;bottom: 55rpx;" l-class="count" min="1" count="1" max="99" step="1" bind:linchange="onCounterChange" /> -->
                 <view style="position: fixed; height: 42rpx; display: block; box-sizing: border-box; color: red; left: 350rpx; bottom: 65rpx; text-align: right">
                     ¥{{defaultSku.price}}/份
                 </view>
 
-                <l-button size="medium" shape="semicircle" style="left: 500rpx;position: fixed;bottom: 45rpx; " bindtap="addShoppingTrolley" data-add="{{popupObj}}" wx:if="{{findSku}}">添加至购物车</l-button>
-                <l-button size="medium" shape="semicircle" style=" left: 500rpx;position: fixed;bottom: 45rpx; " type="error" disabled="{{true}}" wx:else="">无货</l-button>
+                <van-button size="medium" shape="semicircle" style="left: 500rpx;position: fixed;bottom: 45rpx; " bindtap="addShoppingTrolley" data-add="{{popupObj}}" wx:if="{{findSku}}">添加至购物车</van-button>
+                <van-button size="medium" shape="semicircle" style=" left: 500rpx;position: fixed;bottom: 45rpx; " type="error" disabled="{{true}}" wx:else="">无货</van-button>
 
             </view>
-        </l-popup>
+        </van-popup>
 
         <!-- 购物车 -->
         <view class="container">
-            <l-badge value="{{totalCartCount}}" max-count="10" dot="{{false}}" number-type="overflow" shape="circle" wx:if="{{totalCartCount>0}}">
+            <van-badge value="{{totalCartCount}}" max-count="10" dot="{{false}}" number-type="overflow" shape="circle" wx:if="{{totalCartCount>0}}">
                 <view class="doc-container" bindtap="onTrolley">
                     <image src='/images/trolley_full.png' class='doc-img'></image>
                 </view>
-            </l-badge>
+            </van-badge>
 
         </view>
 
 
-        <l-popup show="{{popupTrolleyShow}}" animation="{{true}}" contentAlign="bottom" locked="{{false}}">
+        <van-popup show="{{popupTrolleyShow}}" animation="{{true}}" contentAlign="bottom" locked="{{false}}">
             <view style="position: relative; width: 250rpx; height: 54rpx; left: 454rpx; top: 78rpx; display: block; box-sizing: border-box; text-align: end; color: rgb(114, 114, 114)" bindtap="clearCartItem">清空购物车</view>
             <view class='popup-bottom'>
                 <view style="width: 750rpx; height: 566rpx; overflow-x: hidden; overflow-y: auto; position: relative; left: 0rpx; top: 80rpx; display: block; box-sizing: border-box">
@@ -121,13 +121,13 @@
                 <view style="padding-top: 20px;padding-bottom: 20px;position: relative; width: 322rpx; height: 96rpx; left: 24rpx;  color: red; top: 40rpx; display: block; box-sizing: border-box; text-align: left">¥{{totalCartPrice}}</view>
             </view>
 
-        </l-popup>
+        </van-popup>
     </view>
 </view>
 
-<l-loading wx:if="{{showLoading}}" l-container-class="l-container" show="{{showLoading}}" full-screen="{{true}}" custom="{{true}}">
+<van-loading wx:if="{{showLoading}}" l-container-class="l-container" show="{{showLoading}}" full-screen="{{true}}" custom="{{true}}">
     <image class='loading-img' src='http://img.zcool.cn/community/0198c458ddfd88a801219c772c8902.gif'></image>
-</l-loading>
+</van-loading>
 
 
 <wxs module="wxs" src="../../wxs/number.wxs" />

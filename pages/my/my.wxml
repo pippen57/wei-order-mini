@@ -7,31 +7,9 @@
      与你
     </view>
   </view>
-  <navigator url="/pages/orderInfo/orderInfo" class="weui-cell weui-cell_access" hover-class="none">
-  <view class='address-container'  style="width: 690rpx; height: 100rpx; display: flex; box-sizing: border-box">
-
-    <van-icon name="cart-o"   class='dot' />
-    <view class='doc-container' bindtap='copyLink'>
-      <text class='doc-txt'>我的订单</text>
-    </view>
-    <van-icon class="dot-right" name="arrow"  size='20' />
-  </view>
-  </navigator>
-  <view class='address-container' style="width: 690rpx; height: 100rpx; display: flex; box-sizing: border-box">
-
-    <van-icon name="contact" class='dot' />
-    <view class='doc-container' bindtap='copyLink' >
-      <text class='doc-txt'>个人资料</text>
-    </view>
-    <van-icon class="dot-right" name="arrow"  size='20' />
-  </view>
-  <view class='address-container' style="width: 690rpx; height: 100rpx; display: flex; box-sizing: border-box">
-
-    <van-icon name="info-o"  class='dot'/>
-    <view class='doc-container' bindtap='copyLink' >
-      <text class='doc-txt'>关于</text>
-    </view>
-    <!-- <van-icon class="dot-right" name='right' size='20' /> -->
-    <van-icon class="dot-right" name="arrow"  size='20' />
-  </view>
 </view>
+<van-cell-group>
+  <van-cell icon="orders-o" title="我的订单" is-link url="/pages/orderInfo/orderInfo" />
+  <van-cell icon="user-o" title="个人资料" is-link />
+  <van-cell icon="info-o" title="关于" is-link  />
+</van-cell-group>

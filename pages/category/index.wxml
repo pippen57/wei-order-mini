@@ -1,14 +1,13 @@
-
 <view wx:if="{{ !scanDining }}" class="box">
   <view class="shop-name">
-    <view class="name" bindtap="selectshop">萨默尔面馆（协同店）</view>
+    <view class="name" bindtap="selectshop">{{shopInfo.shopName}}</view>
     <view class="select">
-      <view class="{{peisongType == 'ts' ? 'on' : 'off'}}" data-type="zq" bindtap="changePeisongType">堂食</view>
-      <view class="{{peisongType == 'db' ? 'on' : 'off'}}" data-type="kd" bindtap="changePeisongType">打包</view>
+      <view class="{{peisongType == 'ts' ? 'on' : 'off'}}" data-type="ts" bindtap="changePeisongType">堂食</view>
+      <view class="{{peisongType == 'db' ? 'on' : 'off'}}" data-type="db" bindtap="changePeisongType">打包</view>
     </view>
   </view>
   <view class="distance-bar">
-    <view class="distance">距离您13千米</view>
+    <view class="distance">距离您{{kml}}千米</view>
     <navigator url="/pages/shop/detail?id={{shopInfo.id}}" hover-class="none">
       <view class="shop-message">
         <view class="message">查看门店信息</view>
@@ -33,12 +32,10 @@
       </swiper-item>
     </swiper>
     <van-empty wx:if="{{!goods || goods.length == 0}}" description="暂无商品" />
-    <van-card wx:for="{{goods}}" wx:key="id" centered="true" lazy-load="true"  price="{{item.price}}"
-     thumb-mode="aspectFill" tag="{{ item.badge ? item.badge : '' }}"
-     desc="{{item.characteristic}}" title="{{item.productName}}" thumb="{{item.pic}}">
+    <van-card wx:for="{{goods}}" wx:key="id" centered="true" lazy-load="true" price="{{item.price}}" thumb-mode="aspectFill" tag="{{ item.badge ? item.badge : '' }}" desc="{{item.characteristic}}" title="{{item.productName}}" thumb="{{item.pic}}">
 
       <view class="goods-btn" slot="footer">
-        <van-tag  wx:if="{{item.skuList.length>1}}" color="#3963BC"  size="large" data-idx="{{item}}" bindtap="showProdDetail">选规格</van-tag>
+        <van-tag wx:if="{{item.skuList.length>1}}" color="#3963BC" size="large" data-idx="{{item}}" bindtap="showProdDetail">选规格</van-tag>
         <van-icon wx:else name="add" color="#3963BC" size="50rpx" data-idx="{{item}}" bindtap="addCart" />
       </view>
     </van-card>
@@ -52,7 +49,7 @@
   </view>
   <view class="r">
     <view class="amount"><text>¥</text>{{shippingCarInfo.price}}</view>
-    <view wx:if="{{shopIsOpened}}" class="topay" bindtap="goPay">选好了</view>
+    <view  wx:if="{{shopIsOpened}}" class="topay" bindtap="goPay">选好了</view>
     <view wx:elif="{{ !shopInfo }}" class="topay" bindtap="getshopInfo">获取门店</view>
     <view wx:else class="topay noopen">未营业</view>
   </view>
@@ -61,57 +58,50 @@
 
 
 <van-popup show="{{ showGoodsDetailPOP }}" custom-style="max-height: 80%;z-index:99999;" closeable close-icon="close" position="bottom" bind:close="hideProdDetail">
-  <image wx:if="{{ showGoodsDetailPOP }}" mode='aspectFill' class='photos-00' src='{{curGoodsMap.basicInfo.pic}}'></image>
-  <view class="title-name">{{curGoodsMap.basicInfo.name}}</view>
-  <view wx:for="{{curGoodsMap.properties}}" wx:key="id" class="content-1">
-    <view class="title">{{item.name}}</view>
+  <image wx:if="{{ showGoodsDetailPOP }}" mode='aspectFill' class='photos-00' src='{{popupObj.pic}}'></image>
+  <view class="title-name">{{popupObj.productName}}</view>
+  <view wx:for="{{skuGroup}}" wx:for-index="key" wx:for-item="value" wx:key='*this' wx:key="id" class="content-1">
+    <view class="title">{{key}}</view>
     <view class="box-1">
-      <view wx:for="{{item.childsCurGoods}}" wx:key="id" wx:for-item="small" wx:for-index="index2" class="title-1 {{small.selected?'active':''}}" data-idx1="{{index}}" data-idx2="{{index2}}" bindtap="skuClick">{{small.name}}</view>
-    </view>
-  </view>
-  <view wx:for="{{goodsAddition}}" wx:key="id" class="content-1">
-    <view class="title">{{item.name}}</view>
-    <view class="box-1">
-      <view wx:for="{{item.items}}" wx:key="id" wx:for-item="small" wx:for-index="index2" class="title-1 {{small.active?'active':''}}" data-idx1="{{index}}" data-idx2="{{index2}}" bindtap="skuClick2">{{small.name}}</view>
+      <view wx:for="{{value}}" wx:key='*this' class="title-1 {{wxs.array_contain(selectedProp,item)?'active':''}}" bindtap='toChooseItem' data-key="{{key}}" data-val="{{item}}">{{item}}</view>
     </view>
   </view>
 
-  <view wx:if="{{curGoodsMap.content}}" class="introduce">
+  <view wx:if="{{popupObj.content}}" class="introduce">
     <view class="title">产品介绍</view>
     <view class="content">
-      <parser html="{{curGoodsMap.content}}" />
+      <!-- <parser html="{{popupObj.content}}" /> -->
+      {{popupObj.content}}
     </view>
   </view>
 
   <view class="blank"></view>
   <view class="add-bar">
     <view class="add-box">
-      <view class="price"><text>¥</text>{{curGoodsMap.price}}</view>
-      <van-stepper value="{{ curGoodsMap.number }}" min="{{curGoodsMap.basicInfo.minBuyNumber}}" bind:change="goodsStepChange" />
+      <view class="price"><text>¥</text>{{defaultSku.price?defaultSku.price:popupObj.price}}</view>
+      <van-stepper value="{{ selectNumber }}" min="1" bind:change="onCounterChange" />
     </view>
     <view class="add-cart">
-      <van-button wx:if="{{lijipingtuanbuy}}" block color="#e64340" bind:click="pingtuanbuy">拼团抢购</van-button>
-      <van-button wx:else block color="#e64340" bind:click="addCart2">加入购物车</van-button>
+      <van-button block color="#3963BC" size="large" bind:click="addShoppingTrolley" data-add="{{popupObj}}">加入购物车</van-button>
     </view>
   </view>
 </van-popup>
 
-<van-popup show="{{ showCartPop }}" position="bottom" custom-style="bottom: 100rpx;max-height: 80%;" bind:close="hideCartPop">
-  <view class="empty-box" bindtap="clearCart">
+<van-popup show="{{ showCartPop }}" position="bottom" custom-style="bottom: 130rpx;max-height: 80%;" bind:close="hideCartPop">
+  <view class="empty-box" bindtap="clearCartItem">
     <van-icon name="delete" />
     <view class="empty-1">清空购物车</view>
   </view>
   <view wx:for="{{shippingCarInfo.items}}" wx:key="key" class="cart-goods-list">
     <view class="l">
-      <view class="title">{{item.name}}</view>
+      <view class="title">{{item.product.productName}}</view>
       <view wx:if="{{item.sku}}" class="content">
-        <block wx:for="{{item.sku}}" wx:key="optionValueId" wx:for-item="_sku">{{_sku.optionValueName}} </block>
-        <block wx:for="{{item.additions}}" wx:for-item="option" wx:key="index">{{option.name}} </block>
+        <block>{{item.sku.skuName}} </block>
       </view>
     </view>
     <view class="r">
-      <view class="price">¥{{ item.price }}</view>
-      <van-stepper value="{{ item.number }}" min="0" async-change disable-input data-idx="{{index}}" bind:change="cartStepChange" />
+      <view class="price">¥{{ item.product.price }}</view>
+      <van-stepper value="{{ item.quantity }}" min="0" async-change disable-input data-idx="{{index}}" bind:change="cartStepChange" />
     </view>
   </view>
 </van-popup>
@@ -126,3 +116,5 @@
     <van-tabbar-item icon="bill-o">已点</van-tabbar-item>
   </van-tabbar>
 </block>
+
+<wxs module="wxs" src="../../wxs/number.wxs" />
