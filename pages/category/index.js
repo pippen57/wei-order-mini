@@ -26,49 +26,48 @@ Page({
     navList: [],
     // 加入购物车数量
     selectNumber: 1,
-    goods:[]
+    shops: null,
+    goods: []
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
-    this.categories()
-    this.getTrolley()
     this.getshopInfo()
-  },
-getshopInfo(){
-  const shopInfo = wx.getStorageSync('shopInfo')
-  if (shopInfo) {
-    this.setData({
-      shopInfo: shopInfo,
-      shopIsOpened: this.checkIsOpened(shopInfo.openTime)
-    })
-  }
-  var _this = this
-  wx.getLocation({
    
-    type: 'gcj02', //wgs84 返回 gps 坐标，gcj02 返回可用于 wx.openLocation 的坐标
-    success: (res) => {
-      // console.log(res)
-      this.data.latitude = res.latitude
-      this.data.longitude = res.longitude
-      // this.fetchShops(res.latitude, res.longitude, '')
-      var kml = utils.getDistance(res.latitude, res.longitude, this.data.shopInfo.shopLat,  this.data.shopInfo.shopLng)
-      _this.setData({
-        kml:kml
+    this.getTrolley()
+  },
+  getshopInfo() {
+    const shopInfo = wx.getStorageSync('shopInfo')
+    if (shopInfo) {
+      this.setData({
+        shops: shopInfo,
+        shopIsOpened: utils.checkIsOpened(shopInfo.openTime)
       })
-    },      
-    fail(e){
-    
-        wx.showModal({
-          title: '出错了~',
-          content: e.errMsg,
-          showCancel: false
-        })
+      this.categories()
+    } else {
+      var _this = this
+      http.shopList(_this, app.globalData.long, app.globalData.lat, null, r => {
+        console.log(r);
+        if (r.code == 0 && r.data.length > 0) {
+          var shopInfo = r.data[0];
+          shopInfo.kml = (r.data[0].kml/1000).toFixed(2)
+          wx.setStorageSync('shopInfo', shopInfo)
+          _this.setData({
+            shops: shopInfo,
+            shopIsOpened: utils.checkIsOpened(shopInfo.openTime)
+          })
+          this.categories()
+        } else {
+          wx.showToast({
+            title: '暂无开通门店—'
+          })
+        }
+      });
     }
-  })
-},
+
+  },
 
 
 
@@ -83,8 +82,9 @@ getshopInfo(){
     })
   },
   categories() {
+    if(this.data.shops.id){
     http.request({
-      url: "/product/category_all/" + "1588058446765236226",
+      url: "/product/category_all/" + this.data.shops.id,
       method: "get",
       callBack: result => {
         this.setData({
@@ -94,6 +94,9 @@ getshopInfo(){
         this.products()
       }
     })
+  } else{
+    this.getshopInfo()
+  }
   },
   categoryClick(e) {
     const index = e.currentTarget.dataset.idx
@@ -103,17 +106,16 @@ getshopInfo(){
       scrolltop: 0
     })
     wx.showToast({
-
       icon: 'loading'
     })
     this.products()
   },
   products() {
     http.request({
-      url: "/product/list/" + "1588058446765236226/" + this.data.categorySelected.id,
+      url: "/product/list/" + this.data.shops.id+"/" + this.data.categorySelected.id,
       method: "get",
       callBack: result => {
-        console.log("/product/list/",result);
+        console.log("/product/list/", result);
         wx.hideToast({
           success: (res) => {},
         })
@@ -123,7 +125,7 @@ getshopInfo(){
         this.processBadge()
       }
     })
-   
+
   },
   showCartPop() {
     this.setData({
@@ -298,10 +300,28 @@ getshopInfo(){
     if (!this.data.findSku) {
       return;
     }
+    if(!this.data.shops.id){
+      wx.showModal({
+        title: '请先选择门店',
+        content: '',
+        complete: (res) => {
+          if (res.cancel) {
+            
+          }
+      
+          if (res.confirm) {
+            wx.switchTab({
+              url: '/pages/shop/select',
+            })
+          }
+        }
+      })
+      return;
+    }
     var ths = this;
     var prod = e.currentTarget.dataset.add
     var params = {
-      shopId: 1588058446765236226,
+      shopId: this.data.shops.id,
       productId: prod.id,
       skuId: this.data.defaultSku.id,
       quantity: this.data.selectNumber ? this.data.selectNumber : 1
@@ -334,7 +354,7 @@ getshopInfo(){
       method: "DELETE",
       callBack: result => {
         this.setData({
-          shippingCarInfo:{}
+          shippingCarInfo: {}
         })
         wx.vibrateShort({
           type: 'medium'
@@ -375,23 +395,23 @@ getshopInfo(){
     })
     console.log(this.data.selectNumber);
   },
-   /**
-     * 结算
-     */
-    goPay() {
-      this.setData({
-        shippingCarInfo: false,
-        showCartPop:false
-      })
-      wx.navigateTo({
-          url: '/pages/order/order',
-          success: function (res) {
-              // 通过 eventChannel 向被打开页面传送数据
-              res.eventChannel.emit('acceptDataFromOpenerPage', {
-                  data: 'test'
-              })
-          }
-      })
+  /**
+   * 结算
+   */
+  goPay() {
+    this.setData({
+      shippingCarInfo: false,
+      showCartPop: false
+    })
+    wx.navigateTo({
+      url: '/pages/order/order',
+      success: function (res) {
+        // 通过 eventChannel 向被打开页面传送数据
+        res.eventChannel.emit('acceptDataFromOpenerPage', {
+          data: 'test'
+        })
+      }
+    })
   },
   // 显示分类和商品数量徽章
   processBadge() {
@@ -406,7 +426,7 @@ getshopInfo(){
       return
     }
     categories.forEach(ele => {
-      ele.badge= 0
+      ele.badge = 0
     })
     goods.forEach(ele => {
       ele.badge = 0
@@ -444,29 +464,6 @@ getshopInfo(){
     wx.navigateTo({
       url: '/pages/shop/select?type=index',
     })
-  },
-  checkIsOpened(openingHours) {
-    if (!openingHours) {
-      return true
-    }
-    const date = new Date();
-    const startTime = openingHours.split('-')[0]
-    const endTime = openingHours.split('-')[1]
-    const dangqian=date.toLocaleTimeString('chinese',{hour12:false})
-    
-    const dq=dangqian.split(":")
-    const a = startTime.split(":")
-    const b = endTime.split(":")
-
-    const dqdq=date.setHours(dq[0],dq[1])
-    const aa=date.setHours(a[0],a[1])
-    const bb=date.setHours(b[0],b[1])
-
-    if (a[0]*1 > b[0]*1) {
-      // 说明是到第二天
-      return !this.checkIsOpened(endTime + '-' + startTime)
-    }
-    return aa<dqdq && dqdq<bb
   },
   /**
    * 生命周期函数--监听页面初次渲染完成

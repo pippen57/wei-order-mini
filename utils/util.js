@@ -33,8 +33,34 @@ const getDistance=(lat1, lng1, lat2, lng2) => {
   console.log('经纬度计算的距离:' + s)
   return s
 }
+const   checkIsOpened=(openingHours)=>{
+  if (!openingHours) {
+    return true
+  }
+  const date = new Date();
+  const startTime = openingHours.split('-')[0]
+  const endTime = openingHours.split('-')[1]
+  const dangqian = date.toLocaleTimeString('chinese', {
+    hour12: false
+  })
+
+  const dq = dangqian.split(":")
+  const a = startTime.split(":")
+  const b = endTime.split(":")
+
+  const dqdq = date.setHours(dq[0], dq[1])
+  const aa = date.setHours(a[0], a[1])
+  const bb = date.setHours(b[0], b[1])
+
+  if (a[0] * 1 > b[0] * 1) {
+    // 说明是到第二天
+    return !checkIsOpened(endTime + '-' + startTime)
+  }
+  return aa < dqdq && dqdq < bb
+}
 
 module.exports = {
   formatTime: formatTime,
-  getDistance: getDistance
+  getDistance: getDistance,
+  checkIsOpened:checkIsOpened
 }

@@ -113,6 +113,25 @@ function getProduct(shopId) {
         }
       })
   }
+
+  function  shopList(that,longitude,latitude,shopName,call){
+    request({
+      url: "/shop",
+      method: "POST",
+      data:  {
+        shopName:shopName,
+        longitude:longitude,
+        latitude:latitude
+      },
+      callBack: result => {
+          console.log(result);
+          call(result)
+          // that.setData({
+          //   shops: result.data
+          // })
+      }
+  })
+  }
 // 更新用户头像昵称
 function updateUserInfo() {
   wx.getUserInfo({
@@ -157,8 +176,10 @@ function getCartCount() {
 }
 
 
+
 exports.getToken = getToken;
 exports.request = request;
 exports.getCartCount = getCartCount;
 exports.updateUserInfo = updateUserInfo;
 exports.getProduct = getProduct;
+exports.shopList = shopList

@@ -1,6 +1,7 @@
 // pages/shop/select.js
 var http = require("../../utils/http");
 var utils = require("../../utils/util")
+var app = getApp();
 Page({
 
     /**
@@ -34,16 +35,7 @@ Page({
      */
     onShow() {
       var _this = this 
-      wx.getLocation({
-          type: 'gcj02',
-          success(res) {
-            _this.setData({
-              lat: res.latitude,
-              long: res.longitude
-            })
-            _this.shopList()
-          }
-      })
+      this.shopList()
       
     },
     searchChange(event){
@@ -53,23 +45,16 @@ Page({
       })
     },
     shopList(){
-      http.request({
-        url: "/shop",
-        method: "POST",
-        data:  {
-          shopName:this.data.searchValue
-        },
-        callBack: result => {
-            console.log(result);
-            result.data.forEach(ele => {
-              var kml = utils.getDistance(this.data.lat, this.data.long, ele.shopLat, ele.shopLng)
-              ele.distance = kml
-            })
-            this.setData({
-              shops: result.data
-            })
-        }
-    })
+      var _this = this 
+      http.shopList(_this,app.globalData.long, app.globalData.lat,_this.data.searchValue,r=>{
+        console.log(r);
+        r.data.forEach(ele => {
+          ele.kml = (ele.kml/1000).toFixed(2) // 距离保留3位小数
+        })
+        this.setData({
+          shops: r.data
+        })
+      })
     },
     search(event){
       console.log('search')

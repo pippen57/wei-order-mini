@@ -1,4 +1,4 @@
-<van-cell icon="location-o" title="{{shopInfo.name}} / 距离您{{shopInfo.distance}}km" label="{{shopInfo.address}}" is-link url="/pages/shop/select?type=pay" />
+<van-cell icon="location-o" title="{{shops.shopName}} / 距离您{{shops.kml}}km" label="{{shops.shopAddress}}" is-link url="/pages/shop/select?type=pay" />
 <view class="pay-bar">
 	<view class="way-bar">
 		<view class="peisong ziqu {{peisongType == 'ts' ? 'active' : ''}}" bindtap="selected" data-pstype="ts">
@@ -19,7 +19,7 @@
 		clearable
 		focus
     placeholder="请输入手机号码">
-		<van-button slot="button" size="small" color="#3963BC" open-type="getPhoneNumber" bind:getphonenumber="getPhoneNumber">重新获取</van-button>
+		<!-- <van-button slot="button" size="small" color="#3963BC" open-type="getPhoneNumber" bind:getphonenumber="getPhoneNumber">重新获取</van-button> -->
   </van-field>
 	<van-cell
 	 	title="取餐时间"
@@ -33,6 +33,7 @@
 <view class="goods-title">商品明细</view>
 <van-row custom-class="detail" wx:for="{{trolleyList}}" wx:key="index">
 	<van-col span="18">
+  
 		<view class="detail-1">{{item.product.productName}}</view>
 		<view class="goods-label">{{item.label}}
 			<block >

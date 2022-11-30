@@ -1,5 +1,6 @@
 // pages/order/order.js
 var http = require("../../utils/http");
+var utils = require("../../utils/util")
 var app = getApp();
 Page({
 
@@ -8,11 +9,12 @@ Page({
    */
   data: {
     trolleyList: [],
-    remarks: '',
+    remark: '',
     totalCount: 0,
     totalMoney: 0.0,
     mobile: null,
     peisongType: 'ts',
+    diningTime: "立即",
     currentDate: new Date().getHours() + ':' + (new Date().getMinutes() % 10 === 0 ? new Date().getMinutes() : Math.ceil(new Date().getMinutes() / 10) * 10),
     minHour: new Date().getHours(),
     minMinute: new Date().getMinutes(),
@@ -38,7 +40,34 @@ Page({
   onLoad(options) {
 
   },
+  getshopInfo() {
+    const shopInfo = wx.getStorageSync('shopInfo')
+    if (shopInfo) {
+      this.setData({
+        shops: shopInfo,
+        shopIsOpened: utils.checkIsOpened(shopInfo.openTime)
+      })
+    } else {
+      var _this = this
+      http.shopList(_this, app.globalData.long, app.globalData.lat, null, r => {
+        console.log(r);
+        if (r.code == 0 && r.data.length > 0) {
+          var shopInfo = r.data[0];
+          shopInfo.kml = (r.data[0].kml / 1000).toFixed(2)
+          wx.setStorageSync('shopInfo', shopInfo)
+          _this.setData({
+            shops: shopInfo,
+            shopIsOpened: this.checkIsOpened(shopInfo.openTime)
+          })
+        } else {
+          wx.showToast({
+            title: '暂无开通门店—'
+          })
+        }
+      });
+    }
 
+  },
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
@@ -76,15 +105,15 @@ Page({
     // 获取
     this.preOrder()
     this.setData({
-      peisongType: wx.getStorageSync('peisongType')?wx.getStorageSync('peisongType'):'ts'
+      peisongType: wx.getStorageSync('peisongType') ? wx.getStorageSync('peisongType') : 'ts'
     })
+    this.getshopInfo()
   },
   preOrder() {
     http.request({
       url: "/order/pre_order",
       method: "GET",
       callBack: result => {
-        console.log(result);
         this.setData({
           trolleyList: result.data.prodList,
           totalCount: result.data.totalCount,
@@ -94,10 +123,43 @@ Page({
       }
     })
   },
-    // 备注
-    remarkChange(e){
-      this.data.remark = e.detail.value
-    },
+  // getPhoneNumber(e) {
+  //   if (!e.detail.errMsg || e.detail.errMsg != "getPhoneNumber:ok") {
+  //     wx.showToast({
+  //       title: e.detail.errMsg,
+  //       icon: 'none'
+  //     })
+  //     return;
+  //   }
+  //   const res = await WXAPI.bindMobileWxapp(wx.getStorageSync('token'), this.data.code, e.detail.encryptedData, e.detail.iv)
+
+  //   if (res.code === 10002) {
+  //     wx.showToast({
+  //       title: '请先登陆',
+  //       icon: 'none'
+  //     })
+  //     return
+  //   }
+  //   if (res.code == 0) {
+  //     wx.showToast({
+  //       title: '读取成功',
+  //       icon: 'success'
+  //     })
+  //     this.setData({
+  //       mobile: res.data
+  //     })
+  //   } else {
+  //     wx.showToast({
+  //       title: res.msg,
+  //       icon: 'none'
+  //     })
+  //   }
+  // },
+  // 备注
+  remarkChange(e) {
+    console.log(e);
+    this.data.remark = e.detail.value
+  },
   /**
    * 确认付款 并吊起微信支付
    */
@@ -118,54 +180,92 @@ Page({
       })
       return
     }
-    this.setData({
-      submitLoding: true
-    })
-    wx.showToast({
-      title: '正在提交订单.',
-      icon: 'loading'
-    })
-    http.request({
-      url: "/order",
-      method: "POST",
-      data: {
-        shopId: "1588058446765236226",
-        remarks: this.data.remarks,
-        mealType: this.data.peisongType == 'ts' ? 1 : 2,
-        mealTime: this.data.diningTime
-      },
-      callBack: result => {
-        console.log(result);
-        wx.hideToast()
-        if(result.code!=0){
-          this.setData({
-            submitLoding: false
-          })
+    if (!this.data.shops.id) {
+      wx.showModal({
+        title: '请选择门店',
+        content: '',
+        complete: (res) => {
+          if (res.cancel) {
+
+          }
+
+          if (res.confirm) {
+
+          }
         }
-        wx.requestPayment({
-          timeStamp: result.data.timeStamp,
-          nonceStr: result.data.nonceStr,
-          package: result.data.packageValue,
-          signType: 'RSA',
-          paySign: result.data.paySign,
-          success(res) {
-            console.log(res);
-            wx.redirectTo({
-              url: '/pages/orderInfo/orderInfo'
-            })
-          },
-          fail(res) {
-            console.log(res);
-            wx.redirectTo({
-              url: '/pages/orderInfo/orderInfo'
-            })
-            this.setData({
-              submitLoding: false
+      })
+      return
+    } else {
+      wx.showModal({
+        title: '请确认下单门店',
+        content: '您选择的门店：' + this.data.shops.shopName,
+        cancelText: "选择门店",
+        confirmText: "确认下单",
+        complete: (res) => {
+          if (res.cancel) {
+            wx.navigateTo({
+              url: '/pages/shop/select',
             })
           }
-        })
-      }
-    })
+
+          if (res.confirm) {
+            this.setData({
+              submitLoding: true
+            })
+            wx.showToast({
+              title: '正在提交订单.',
+              icon: 'loading'
+            })
+            http.request({
+              url: "/order",
+              method: "POST",
+              data: {
+                shopId: this.data.shops.id,
+                remarks: this.data.remark,
+                mealType: this.data.peisongType == 'ts' ? 1 : 2,
+                mealTime: this.data.diningTime
+              },
+              callBack: result => {
+                console.log(result);
+                wx.hideToast()
+                if (result.code != 0) {
+                  this.setData({
+                    submitLoding: false
+                  })
+                  wx.showToast({
+                    title: result.msg,
+                  })
+                  return
+                }
+                wx.requestPayment({
+                  timeStamp: result.data.timeStamp,
+                  nonceStr: result.data.nonceStr,
+                  package: result.data.packageValue,
+                  signType: 'RSA',
+                  paySign: result.data.paySign,
+                  success(res) {
+                    console.log(res);
+                    wx.redirectTo({
+                      url: '/pages/orderInfo/orderInfo'
+                    })
+                  },
+                  fail(res) {
+                    console.log(res);
+                    wx.redirectTo({
+                      url: '/pages/orderInfo/orderInfo'
+                    })
+                    this.setData({
+                      submitLoding: false
+                    })
+                  }
+                })
+              }
+            })
+          }
+        }
+      })
+    }
+
   },
   bindTextAreaBlur(e) {
     console.log(e.detail.value);

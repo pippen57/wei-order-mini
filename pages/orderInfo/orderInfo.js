@@ -7,14 +7,14 @@ Page({
    * 页面的初始数据
    */
   data: {
-    orderList:[]
+    orderList:[],
+    orderLoading:true
   },
   orderListHandler(){
     http.request({
         url: "/order",
         method: "GET",
         callBack: result => {
-            console.log(result);
             result.data.list.forEach(ele => {
               if (ele.order.status == 1) {
                 ele.order.statusStr = '待付款'
@@ -33,11 +33,18 @@ Page({
               }
             })
             this.setData({
+              orderLoading:false,
               orderList: result.data.list,
               total:result.data.total
             })
         }
     })
+},
+
+toIndexPage(){
+  wx.redirectTo({
+    url: '/pages/category/index',
+  })
 },
 /**
  * 关闭订单

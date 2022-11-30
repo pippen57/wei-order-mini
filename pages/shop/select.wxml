@@ -10,10 +10,10 @@
 			<van-icon name="shop-o" />
 			<text style="color:#333">{{ item.shopName }}</text>
 		</view>
-		<view wx:if="{{index == 0}}" class="distance">{{ item.distance }}<text>km</text></view>
+		<view wx:if="{{index == 0}}" class="distance">{{ item.kml }}<text>km</text></view>
     
 		<view wx:if="{{index > 0}}" class="distance-black" bindtap="goShop" data-idx="{{ index }}">
-			<text class="d">{{ item.distance }}</text>
+			<text class="d">{{ item.kml }}</text>
 			<text class="u">km</text>
 			<van-icon name="arrow" />
 		</view>

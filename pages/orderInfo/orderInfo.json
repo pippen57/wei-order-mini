@@ -3,5 +3,6 @@
   "navigationBarTitleText": "全部订单",
   "navigationBarTextStyle": "white",
   "usingComponents": {
+    "van-overlay": "@vant/weapp/overlay/index"
   }
 }

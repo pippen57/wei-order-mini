@@ -13,6 +13,11 @@
     "requiredPrivateInfos":[
       "getLocation"
     ],
+    "permission": {
+      "scope.userLocation": {
+        "desc": "你的位置信息将用于获取您距离店铺距离" 
+      }
+    },
     "window": {
         "backgroundTextStyle": "light",
         "navigationBarBackgroundColor": "#fff",
@@ -65,6 +70,7 @@
         "van-goods-action": "@vant/weapp/goods-action/index",
         "van-goods-action-icon": "@vant/weapp/goods-action-icon/index",
         "van-toast": "@vant/weapp/toast/index",
+        "van-loading": "@vant/weapp/loading/index",
         "van-goods-action-button": "@vant/weapp/goods-action-button/index"
     },
     "sitemapLocation": "sitemap.json"

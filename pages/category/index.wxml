@@ -1,14 +1,14 @@
 <view wx:if="{{ !scanDining }}" class="box">
   <view class="shop-name">
-    <view class="name" bindtap="selectshop">{{shopInfo.shopName}}</view>
+    <view class="name" bindtap="selectshop">{{shops.shopName}}</view>
     <view class="select">
       <view class="{{peisongType == 'ts' ? 'on' : 'off'}}" data-type="ts" bindtap="changePeisongType">堂食</view>
       <view class="{{peisongType == 'db' ? 'on' : 'off'}}" data-type="db" bindtap="changePeisongType">打包</view>
     </view>
   </view>
   <view class="distance-bar">
-    <view class="distance">距离您{{kml}}千米</view>
-    <navigator url="/pages/shop/detail?id={{shopInfo.id}}" hover-class="none">
+    <view class="distance">距离您{{(shops.kml)}}千米</view>
+    <navigator url="/pages/shop/detail?id={{shops.id}}" hover-class="none">
       <view class="shop-message">
         <view class="message">查看门店信息</view>
         <van-icon name="arrow" />
@@ -50,7 +50,7 @@
   <view class="r">
     <view class="amount"><text>¥</text>{{shippingCarInfo.price}}</view>
     <view  wx:if="{{shopIsOpened}}" class="topay" bindtap="goPay">选好了</view>
-    <view wx:elif="{{ !shopInfo }}" class="topay" bindtap="getshopInfo">获取门店</view>
+    <view wx:elif="{{ !shops }}" class="topay" bindtap="getshopInfo">获取门店</view>
     <view wx:else class="topay noopen">未营业</view>
   </view>
 </view>
