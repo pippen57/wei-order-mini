@@ -115,6 +115,10 @@ page {
   margin-left: 32rpx;
   margin-top:32rpx;
 }
+.shop-name{
+  
+  text-align: center;
+}
 .content-1{
   margin-top: 32rpx;
   margin-left: 32rpx;
@@ -359,4 +363,15 @@ page {
   width: 240rpx;
   height: 240rpx;
   margin: auto;
+}
+.shop-info-sheet{
+  height: 80%;
+}
+
+.wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  background-color: white;
 }

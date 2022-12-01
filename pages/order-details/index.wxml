@@ -9,8 +9,8 @@
   <view wx:if="{{order.order.status == 1}}" class="status">
     <van-icon name="gold-coin-o" size="88rpx" color="#07c160" />
     <view class="txt">等待付款</view>
-    <l-button type="warning" plain="{{true}}" size="small" bindtap="cencelOrderHandler">关闭订单</l-button>
-    <l-button type="default" plain="{{true}}" size="small" bindtap="toPayTap" style="margin-left: 13rpx;">立即支付</l-button>
+    <van-button type="default" plain="{{true}}" size="small" bind:click="cencelOrderHandler">关闭订单</van-button>
+    <van-button type="warning" plain="{{true}}" size="small" bind:click="toPayTap" style="margin-left: 13rpx;">立即支付</van-button>
   </view>
   <view wx:if="{{order.order.status == 3 && order.order.isPayed ==1}}" class="status">
     <view class="txt">取餐号</view>
@@ -27,7 +27,7 @@
   <van-divider dashed />
   <view class="shop-info" wx:if="{{order.shop}}">
     <van-cell title="{{order.shop.shopName}}" label="{{order.shop.shopAddress}}" border="{{false}}" url="/pages/shop/detail?id={{order.shop.id}}" />
-    <van-icon name="phone-circle-o" size="70rpx" color="#3963BC" bindtap="callshop" />
+    <van-icon name="phone-circle-o" size="70rpx" color="#3963BC" bindtap="callShop" />
   </view>
   <van-divider dashed />
   <!-- <van-cell wx:if="{{orderDetail.logistics}}" title="{{orderDetail.logistics.linkMan}} / {{orderDetail.logistics.mobile}}" label="{{orderDetail.logistics.provinceStr}}{{orderDetail.logistics.cityStr}}{{orderDetail.logistics.areaStr}}{{orderDetail.logistics.address}}" /> -->

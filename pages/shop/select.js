@@ -1,6 +1,6 @@
 // pages/shop/select.js
 var http = require("../../utils/http");
-var utils = require("../../utils/util")
+var { shopStorageKey } = require("../../utils/config")
 var app = getApp();
 Page({
 
@@ -11,7 +11,8 @@ Page({
       lat: null,
       long: null,
       searchValue: null,
-      shops:[]
+      shops:[],
+      orderLoading:true
     },
 
     /**
@@ -52,7 +53,8 @@ Page({
           ele.kml = (ele.kml/1000).toFixed(2) // 距离保留3位小数
         })
         this.setData({
-          shops: r.data
+          shops: r.data,
+          orderLoading:false
         })
       })
     },
@@ -66,7 +68,7 @@ Page({
     goShop(e){
       console.log(e);
       const idx = e.currentTarget.dataset.idx    
-      wx.setStorageSync('shopInfo', this.data.shops[idx])
+      wx.setStorageSync(shopStorageKey, this.data.shops[idx])
       if (this.data.type == 'index') {
         wx.setStorageSync('refreshIndex', 1)
       }

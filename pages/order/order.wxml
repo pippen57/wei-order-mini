@@ -1,4 +1,4 @@
-<van-cell icon="location-o" title="{{shops.shopName}} / 距离您{{shops.kml}}km" label="{{shops.shopAddress}}" is-link url="/pages/shop/select?type=pay" />
+<van-cell icon="location-o" title="{{shops.shopName}} / 距离您{{shops.kml}}km" label="{{shops.shopAddress}}"  />
 <view class="pay-bar">
 	<view class="way-bar">
 		<view class="peisong ziqu {{peisongType == 'ts' ? 'active' : ''}}" bindtap="selected" data-pstype="ts">
@@ -17,7 +17,6 @@
     label="联系电话"
 		type="number"
 		clearable
-		focus
     placeholder="请输入手机号码">
 		<!-- <van-button slot="button" size="small" color="#3963BC" open-type="getPhoneNumber" bind:getphonenumber="getPhoneNumber">重新获取</van-button> -->
   </van-field>

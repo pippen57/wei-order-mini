@@ -1,6 +1,7 @@
 // pages/order/order.js
 var http = require("../../utils/http");
 var utils = require("../../utils/util")
+var { shopStorageKey } = require("../../utils/config")
 var app = getApp();
 Page({
 
@@ -15,6 +16,7 @@ Page({
     mobile: null,
     peisongType: 'ts',
     diningTime: "立即",
+    shops:null,
     currentDate: new Date().getHours() + ':' + (new Date().getMinutes() % 10 === 0 ? new Date().getMinutes() : Math.ceil(new Date().getMinutes() / 10) * 10),
     minHour: new Date().getHours(),
     minMinute: new Date().getMinutes(),
@@ -41,30 +43,34 @@ Page({
 
   },
   getshopInfo() {
-    const shopInfo = wx.getStorageSync('shopInfo')
+    const shopInfo = wx.getStorageSync(shopStorageKey)
     if (shopInfo) {
       this.setData({
         shops: shopInfo,
         shopIsOpened: utils.checkIsOpened(shopInfo.openTime)
       })
+      this.preOrder()
     } else {
-      var _this = this
-      http.shopList(_this, app.globalData.long, app.globalData.lat, null, r => {
-        console.log(r);
-        if (r.code == 0 && r.data.length > 0) {
-          var shopInfo = r.data[0];
-          shopInfo.kml = (r.data[0].kml / 1000).toFixed(2)
-          wx.setStorageSync('shopInfo', shopInfo)
-          _this.setData({
-            shops: shopInfo,
-            shopIsOpened: this.checkIsOpened(shopInfo.openTime)
-          })
-        } else {
-          wx.showToast({
-            title: '暂无开通门店—'
-          })
-        }
-      });
+    //   var _this = this
+    //   http.shopList(_this, app.globalData.long, app.globalData.lat, null, r => {
+    //     console.log(r);
+    //     if (r.code == 0 && r.data.length > 0) {
+    //       var shopInfo = r.data[0];
+    //       shopInfo.kml = (r.data[0].kml / 1000).toFixed(2)
+    //       wx.setStorageSync(shopStorageKey, shopInfo)
+    //       _this.setData({
+    //         shops: shopInfo,
+    //         shopIsOpened: this.checkIsOpened(shopInfo.openTime)
+    //       })
+    //     } else {
+    //       wx.showToast({
+    //         title: '暂无开通门店—'
+    //       })
+    //     }
+    //   });
+    wx.navigateTo({
+      url: '/pages/shop/select?type=pay',
+    })
     }
 
   },
@@ -103,7 +109,7 @@ Page({
    */
   onShow() {
     // 获取
-    this.preOrder()
+    
     this.setData({
       peisongType: wx.getStorageSync('peisongType') ? wx.getStorageSync('peisongType') : 'ts'
     })
@@ -111,7 +117,7 @@ Page({
   },
   preOrder() {
     http.request({
-      url: "/order/pre_order",
+      url: "/order/pre_order/"+ this.data.shops.id,
       method: "GET",
       callBack: result => {
         this.setData({
@@ -123,38 +129,7 @@ Page({
       }
     })
   },
-  // getPhoneNumber(e) {
-  //   if (!e.detail.errMsg || e.detail.errMsg != "getPhoneNumber:ok") {
-  //     wx.showToast({
-  //       title: e.detail.errMsg,
-  //       icon: 'none'
-  //     })
-  //     return;
-  //   }
-  //   const res = await WXAPI.bindMobileWxapp(wx.getStorageSync('token'), this.data.code, e.detail.encryptedData, e.detail.iv)
 
-  //   if (res.code === 10002) {
-  //     wx.showToast({
-  //       title: '请先登陆',
-  //       icon: 'none'
-  //     })
-  //     return
-  //   }
-  //   if (res.code == 0) {
-  //     wx.showToast({
-  //       title: '读取成功',
-  //       icon: 'success'
-  //     })
-  //     this.setData({
-  //       mobile: res.data
-  //     })
-  //   } else {
-  //     wx.showToast({
-  //       title: res.msg,
-  //       icon: 'none'
-  //     })
-  //   }
-  // },
   // 备注
   remarkChange(e) {
     console.log(e);
@@ -226,7 +201,6 @@ Page({
                 mealTime: this.data.diningTime
               },
               callBack: result => {
-                console.log(result);
                 wx.hideToast()
                 if (result.code != 0) {
                   this.setData({
@@ -234,6 +208,7 @@ Page({
                   })
                   wx.showToast({
                     title: result.msg,
+                    icon:"error"
                   })
                   return
                 }

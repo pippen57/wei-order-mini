@@ -147,6 +147,7 @@ deleteOrderHandler(e){
 
 },
  callShop(e) {
+   console.log(e);
   const shop = e.currentTarget.dataset.shop
   if(shop){
     wx.makePhoneCall({

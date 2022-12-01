@@ -81,7 +81,7 @@
   width: 700rpx;
   height: 72rpx;
   line-height: 72rpx;
-  background: #e64340 !important;
+  background: #3963BC !important;
   color:#FFFFFF !important;
   font-size: 28rpx;
 }
@@ -105,4 +105,11 @@
   margin-left: 12rpx;
   width: 14rpx;
   height: 24rpx;
+}
+.wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  background-color: white;
 }

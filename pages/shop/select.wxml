@@ -4,15 +4,19 @@
 	</view>
 	<input placeholder="搜索门店" bindinput="searchChange" bindconfirm="search" />
 </view>
+<van-overlay  show="{{ orderLoading }}"  bind:click="onClickHide">
+  <view class="wrapper">
+    <van-loading color="#1989fa" />
+  </view>
+</van-overlay>
 <view class="shops" wx:for="{{shops}}" wx:key="id">
 	<view class="t">
 		<view class="name">
 			<van-icon name="shop-o" />
 			<text style="color:#333">{{ item.shopName }}</text>
 		</view>
-		<view wx:if="{{index == 0}}" class="distance">{{ item.kml }}<text>km</text></view>
-    
-		<view wx:if="{{index > 0}}" class="distance-black" bindtap="goShop" data-idx="{{ index }}">
+
+		<view class="distance-black" bindtap="goShop" data-idx="{{ index }}">
 			<text class="d">{{ item.kml }}</text>
 			<text class="u">km</text>
 			<van-icon name="arrow" />
@@ -32,5 +36,5 @@
 		<text>{{ item.tel }}</text>
 	</view>
 
-	<button wx:if="{{index == 0}}" class="goHotel" type="default" bindtap="goShop" data-idx="{{ index }}"> 选择门店 </button>
+	
 </view>

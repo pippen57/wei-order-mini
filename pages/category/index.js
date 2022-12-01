@@ -1,6 +1,7 @@
 // pages/category/index.js
 var http = require("../../utils/http");
 var utils = require("../../utils/util")
+var { shopStorageKey } = require("../../utils/config")
 var app = getApp();
 Page({
 
@@ -11,7 +12,10 @@ Page({
     peisongType: 'ts',
     showCartPop: false, // 是否显示购物车列表
     showGoodsDetailPOP: false, // 是否显示商品详情
+    showShopInfoPOP:false,
     shopIsOpened: false, // 是否营业
+    shippingCarInfoProp:true,
+    prodLoading:true,
     skuList: [],
     popupObj: {},
     defaultSku: undefined,
@@ -34,43 +38,82 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
-    this.getshopInfo()
    
-    this.getTrolley()
+   
+  },
+   /**
+   * 生命周期函数--监听页面显示
+   */
+  onShow() {
+      this.setData({
+        categories: [],
+        categorySelected: {},
+        goods:[]
+      })
+
+    this.getshopInfo()
+    
   },
   getshopInfo() {
-    const shopInfo = wx.getStorageSync('shopInfo')
+    const shopInfo = wx.getStorageSync(shopStorageKey)
     if (shopInfo) {
-      this.setData({
-        shops: shopInfo,
-        shopIsOpened: utils.checkIsOpened(shopInfo.openTime)
-      })
-      this.categories()
+      this.shopOne(shopInfo.id)
     } else {
-      var _this = this
-      http.shopList(_this, app.globalData.long, app.globalData.lat, null, r => {
-        console.log(r);
-        if (r.code == 0 && r.data.length > 0) {
-          var shopInfo = r.data[0];
-          shopInfo.kml = (r.data[0].kml/1000).toFixed(2)
-          wx.setStorageSync('shopInfo', shopInfo)
-          _this.setData({
-            shops: shopInfo,
-            shopIsOpened: utils.checkIsOpened(shopInfo.openTime)
-          })
-          this.categories()
-        } else {
-          wx.showToast({
-            title: '暂无开通门店—'
-          })
-        }
-      });
+    //   var _this = this
+    //   http.shopList(_this, app.globalData.long, app.globalData.lat, null, r => {
+    //     if (r.code == 0 && r.data.length > 0) {
+    //       var shopInfo = r.data[0];
+    //       shopInfo.kml = (r.data[0].kml/1000).toFixed(2)
+    //       wx.setStorageSync(shopStorageKey, shopInfo)
+    //       _this.setData({
+    //         shops: shopInfo,
+    //         shopIsOpened: utils.checkIsOpened(shopInfo.openTime)
+    //       })
+    //       this.categories()
+    //       this.getTrolley()
+    //     } else {
+    //       wx.showToast({
+    //         title: '暂无开通门店—'
+    //       })
+    //     }
+    //   });
+    this.selectshop()
     }
 
   },
 
+  showShopInfoBind(){
+    this.setData({
+      showShopInfoPOP: true,
+      shippingCarInfoProp:false
+    })
+  },
+  hideShopInfo(){
 
-
+    this.setData({
+      showShopInfoPOP: false,
+      shippingCarInfoProp:true
+    })
+  },
+  shopOne(id){
+    http.request({
+      url: "/shop/" + id,
+      method: "post",
+      data:{
+        longitude:app.globalData.long,
+        latitude:app.globalData.lat
+      },
+      callBack: result => {
+        result.data.kml = (result.data.kml/1000).toFixed(2)
+        this.setData({
+          shops: result.data,
+          shopIsOpened: utils.checkIsOpened(result.data.openTime)
+        })
+        this.categories()
+        this.getTrolley()
+      }
+    })
+  },
   changePeisongType(e) {
     const peisongType = e.currentTarget.dataset.type
     this.setData({
@@ -89,9 +132,11 @@ Page({
       callBack: result => {
         this.setData({
           categories: result.data,
-          categorySelected: result.data[0]
+          categorySelected: result.data[0],
+          prodLoading:false
         })
         this.products()
+
       }
     })
   } else{
@@ -115,7 +160,6 @@ Page({
       url: "/product/list/" + this.data.shops.id+"/" + this.data.categorySelected.id,
       method: "get",
       callBack: result => {
-        console.log("/product/list/", result);
         wx.hideToast({
           success: (res) => {},
         })
@@ -142,8 +186,6 @@ Page({
    */
   showProdDetail(e) {
     const index = e.currentTarget.dataset.idx
-    console.log(index);
-
     this.setData({
       showGoodsDetailPOP: true
     })
@@ -234,13 +276,11 @@ Page({
         propKeys: propKeys
       });
     }
-    console.log("defaultSku", defaultSku);
     this.parseSelectedObjToVals();
     this.setData({
       skuGroup: skuGroup,
       allProperties: allProperties
     });
-    console.log(skuGroup, allProperties);
   },
 
   //将已选的 {key:val,key2:val2}转换成 [val,val2]
@@ -268,14 +308,12 @@ Page({
         break;
       }
     }
-    console.log("selectedProperties", selectedProperties, "findSku", findSku);
     this.setData({
       findSku: findSku
     });
   },
   //点击选择规格
   toChooseItem: function (e) {
-    console.log(e.currentTarget.dataset);
     var val = e.currentTarget.dataset.val;
     var key = e.currentTarget.dataset.key;
     var selectedPropObj = this.data.selectedPropObj;
@@ -332,7 +370,6 @@ Page({
       method: "POST",
       data: params,
       callBack: result => {
-        console.log(result);
         wx.vibrateShort({
           type: 'medium'
         })
@@ -350,7 +387,7 @@ Page({
    */
   clearCartItem() {
     http.request({
-      url: "/cart",
+      url: "/cart/"+this.data.shops.id,
       method: "DELETE",
       callBack: result => {
         this.setData({
@@ -369,10 +406,9 @@ Page({
    */
   getTrolley() {
     http.request({
-      url: "/cart",
+      url: "/cart/"+this.data.shops.id,
       method: "GET",
       callBack: result => {
-        console.log(result);
         var price = 0
         result.data.forEach(e => {
           price += e.sku.price * e.quantity
@@ -393,7 +429,6 @@ Page({
     this.setData({
       selectNumber: e.detail
     })
-    console.log(this.data.selectNumber);
   },
   /**
    * 结算
@@ -472,13 +507,7 @@ Page({
 
   },
 
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow() {
-
-    this.getTrolley()
-  },
+ 
 
   /**
    * 生命周期函数--监听页面隐藏

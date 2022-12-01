@@ -2,5 +2,6 @@
   "navigationBarBackgroundColor": "#3963BC",
     "navigationBarTextStyle": "white",
     "usingComponents": {
+      "van-action-sheet": "@vant/weapp/action-sheet/index"
     }
 }

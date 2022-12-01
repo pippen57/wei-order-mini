@@ -1,5 +1,5 @@
 
-<van-overlay wx:if="{{ orderLoading }}" show="{{ orderLoading }}" bind:click="onClickHide">
+<van-overlay wx:if="{{ orderLoading }}" show="{{ orderLoading }}"  bind:click="onClickHide">
   <view class="wrapper">
     <van-loading color="#1989fa" />
   </view>
@@ -35,7 +35,7 @@
 
 			</view>
 			<view class="price-box">
-				<van-button wx:if="{{item.order.status >=2}}" type="default"  plain="{{true}}"   bind:click="callShop" data-shop="{{item.order.shop}}" >联系商家</van-button>
+				<van-button wx:if="{{item.order.status >=2}}" type="default"  plain="{{true}}"   bind:click="callShop" data-shop="{{item.shop}}" >联系商家</van-button>
 				<van-button wx:if="{{item.order.status== 4}}" type="danger" plain="{{true}}"   bind:click="deleteOrderHandler" data-id="{{item.order.id}}" style="position: relative; left: -20rpx; top: 0rpx">删除订单</van-button>
 				<van-button custom-class="btn" wx:if="{{item.order.status== 1}}" type="warning"  plain="{{true}}"  bind:click="cencelOrderHandler" data-id="{{item.order.id}}">关闭订单</van-button>
 				<van-button wx:if="{{item.order.status== 1}}" type="primary" plain="{{true}}"   bind:click="toPayTap" data-ordernumber="{{item.order.orderNumber}}"  style="position: relative; left: -20rpx; top: 0rpx">立即支付</van-button>
