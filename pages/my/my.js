@@ -1,10 +1,12 @@
 // pages/my/my.js
+var http = require("../../utils/http.js");
 Page({
 
     /**
      * 页面的初始数据
      */
     data: {
+        users:null,
     },
 
     /**
@@ -13,7 +15,11 @@ Page({
     onLoad(options) {
 
     },
+    loginUser(){
+        http.getToken();
+        this.getUserInfo()
 
+    },
     /**
      * 生命周期函数--监听页面初次渲染完成
      */
@@ -25,9 +31,21 @@ Page({
      * 生命周期函数--监听页面显示
      */
     onShow() {
-      this.getTabBar().init();
+        this.getTabBar().init();
+         this.getUserInfo()
     },
-
+    getUserInfo(){
+        var userInfo =  wx.getStorageSync('user')
+        if(userInfo){
+            this.setData({
+                users: userInfo
+            })
+        }else{
+            this.setData({
+                users: null
+            })
+        }
+    },
     /**
      * 生命周期函数--监听页面隐藏
      */

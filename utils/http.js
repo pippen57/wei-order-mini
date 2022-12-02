@@ -21,7 +21,7 @@ function request(params, isGetTonken) {
         responseType: params.responseType == undefined ? 'text' : params.responseType,
         success: function (res) {
             if (res.statusCode == 200) {
-                if (res.data.code == 10020) {
+                if (res.data.code == 10020|| res.data.code == 10021) {
                     getToken(params)
                 } else if (res.data.code != 0) {
                     wx.showToast({
@@ -92,6 +92,7 @@ var getToken = function (params) {
                     //   }
                     console.log(result);
                     wx.setStorageSync('token', result.data.token); //把token存入缓存，请求接口数据时要用
+                    wx.setStorageSync('user', result.data.user)
                     var globalData = getApp().globalData;
                     globalData.isLanding = false;
                     while (globalData.requestQueue.length) {

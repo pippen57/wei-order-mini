@@ -206,6 +206,38 @@ Page({
       selectNumber: 1
     })
   },
+  async cartStepChange(e) {
+    const index = e.currentTarget.dataset.idx
+    const item = this.data.shippingCarInfo.items[index]
+
+      // 修改数量
+      wx.showLoading({
+        title: '',
+      })
+      var params = {
+        id: item.id,
+        shopId: item.shopId,
+        productId: item.product.id,
+        skuId: item.sku.id,
+        quantity: e.detail
+      }
+      http.request({
+        url: "/cart",
+        method: "PUT",
+        data: params,
+        callBack: result => {
+          wx.hideLoading()
+          if (result.code != 0) {
+            wx.showToast({
+              title: result.msg,
+              icon: 'none'
+            })
+            return
+          }
+          this.getTrolley()
+        }
+      })
+  },
   /**
    * 根据skuList进行数据组装
    */
@@ -410,6 +442,17 @@ Page({
       method: "GET",
       callBack: result => {
         var price = 0
+        if( result.data.length<=0){
+          this.setData({
+            shippingCarInfo:  {
+              number: 0,
+              price: 0,
+              items: result.data
+            }
+          })
+          this.hideCartPop()
+          return
+        }
         result.data.forEach(e => {
           price += e.sku.price * e.quantity
         })

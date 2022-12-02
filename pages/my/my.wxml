@@ -1,9 +1,12 @@
 <view class='container'>
-  <view class='logo-container'>
-    <image class='logo-img' src='https://peng.pippen.top/wei-order/20221112/0355db1009134f70bbaf5baa8c4e96f6.jpeg'></image>
+  <view class='logo-container' wx:if="{{users}}">
+    <image class='logo-img' src='{{users.avatar}}'></image>
     <view class="version-container">
-     与你
+        {{users.username}}
     </view>
+  </view>
+  <view class='logo-container' wx:else>
+    <van-button plain hairline type="primary" bind:click="loginUser">登录</van-button>
   </view>
 </view>
 
