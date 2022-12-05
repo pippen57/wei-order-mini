@@ -1,5 +1,8 @@
 // pages/my/my.js
-var http = require("../../utils/http.js");
+var config = require("../../utils/config.js");
+var {
+    login
+} = require("../../utils/api");
 Page({
 
     /**
@@ -15,10 +18,37 @@ Page({
     onLoad(options) {
 
     },
-    loginUser(){
-        http.getToken();
-        this.getUserInfo()
-
+     loginUser(){
+         wx.showLoading({
+           title: '登录中.',
+         })
+        wx.login({
+            success: res => {
+                login(res.code).then(result =>{
+                    wx.hideLoading()
+                    if (result.code == 0) {
+                        wx.setStorageSync(config.tokenStorageKey, result.data.token); //把token存入缓存，请求接口数据时要用
+                        wx.setStorageSync(config.userStorageKey, result.data.user)
+                        this.getUserInfo()
+                        wx.showToast({
+                            title: "登录成功",
+                            icon: "success"
+                        });
+                    } else {
+                        wx.showToast({
+                            title: result.msg,
+                            icon: "error"
+                        });
+                    }
+                }).catch(function (reason) {
+                    wx.showLoading()
+                    wx.showToast({
+                        title: "服务器异常",
+                        icon: "error"
+                    });
+                });
+            }
+        })
     },
     /**
      * 生命周期函数--监听页面初次渲染完成
@@ -35,7 +65,7 @@ Page({
          this.getUserInfo()
     },
     getUserInfo(){
-        var userInfo =  wx.getStorageSync('user')
+        var userInfo = wx.getStorageSync(config.userStorageKey)
         if(userInfo){
             this.setData({
                 users: userInfo

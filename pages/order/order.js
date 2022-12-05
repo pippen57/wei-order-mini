@@ -1,7 +1,9 @@
 // pages/order/order.js
-var http = require("../../utils/http");
 var utils = require("../../utils/util")
 var { shopStorageKey } = require("../../utils/config")
+var {
+    previaOrder,confirmOrder
+} = require("../../utils/api");
 var app = getApp();
 Page({
 
@@ -51,26 +53,9 @@ Page({
       })
       this.preOrder()
     } else {
-    //   var _this = this
-    //   http.shopList(_this, app.globalData.long, app.globalData.lat, null, r => {
-    //     console.log(r);
-    //     if (r.code == 0 && r.data.length > 0) {
-    //       var shopInfo = r.data[0];
-    //       shopInfo.kml = (r.data[0].kml / 1000).toFixed(2)
-    //       wx.setStorageSync(shopStorageKey, shopInfo)
-    //       _this.setData({
-    //         shops: shopInfo,
-    //         shopIsOpened: this.checkIsOpened(shopInfo.openTime)
-    //       })
-    //     } else {
-    //       wx.showToast({
-    //         title: '暂无开通门店—'
-    //       })
-    //     }
-    //   });
-    wx.navigateTo({
-      url: '/pages/shop/select?type=pay',
-    })
+        wx.navigateTo({
+        url: '/pages/shop/select?type=pay',
+        })
     }
 
   },
@@ -116,18 +101,15 @@ Page({
     this.getshopInfo()
   },
   preOrder() {
-    http.request({
-      url: "/order/pre_order/"+ this.data.shops.id,
-      method: "GET",
-      callBack: result => {
+    previaOrder(this.data.shops.id).then(result => {
         this.setData({
           trolleyList: result.data.prodList,
           totalCount: result.data.totalCount,
           totalMoney: result.data.totalMoney,
           mobile: result.data.userPhone
         })
-      }
-    })
+      })
+
   },
 
   // 备注
@@ -171,73 +153,51 @@ Page({
       })
       return
     } else {
-      wx.showModal({
-        title: '请确认下单门店',
-        content: '您选择的门店：' + this.data.shops.shopName,
-        cancelText: "选择门店",
-        confirmText: "确认下单",
-        complete: (res) => {
-          if (res.cancel) {
-            wx.navigateTo({
-              url: '/pages/shop/select',
-            })
-          }
-
-          if (res.confirm) {
+      this.setData({
+        submitLoding: true
+      })
+      wx.showToast({
+        title: '正在提交订单.',
+        icon: 'loading'
+      })
+      var data = {
+          shopId: this.data.shops.id,
+          remarks: this.data.remark,
+          mealType: this.data.peisongType == 'ts' ? 1 : 2,
+          mealTime: this.data.diningTime
+        }
+      confirmOrder(data).then(result => {
+          wx.hideToast()
+          if (result.code != 0) {
             this.setData({
-              submitLoding: true
+              submitLoding: false
             })
             wx.showToast({
-              title: '正在提交订单.',
-              icon: 'loading'
+              title: result.msg,
+              icon:"error"
             })
-            http.request({
-              url: "/order",
-              method: "POST",
-              data: {
-                shopId: this.data.shops.id,
-                remarks: this.data.remark,
-                mealType: this.data.peisongType == 'ts' ? 1 : 2,
-                mealTime: this.data.diningTime
-              },
-              callBack: result => {
-                wx.hideToast()
-                if (result.code != 0) {
-                  this.setData({
-                    submitLoding: false
-                  })
-                  wx.showToast({
-                    title: result.msg,
-                    icon:"error"
-                  })
-                  return
-                }
-                wx.requestPayment({
-                  timeStamp: result.data.timeStamp,
-                  nonceStr: result.data.nonceStr,
-                  package: result.data.packageValue,
-                  signType: 'RSA',
-                  paySign: result.data.paySign,
-                  success(res) {
-                    console.log(res);
-                    wx.redirectTo({
-                      url: '/pages/orderInfo/orderInfo'
-                    })
-                  },
-                  fail(res) {
-                    console.log(res);
-                    wx.redirectTo({
-                      url: '/pages/orderInfo/orderInfo'
-                    })
-                    this.setData({
-                      submitLoding: false
-                    })
-                  }
-                })
-              }
-            })
+            return
           }
-        }
+          wx.requestPayment({
+            timeStamp: result.data.timeStamp,
+            nonceStr: result.data.nonceStr,
+            package: result.data.packageValue,
+            signType: 'RSA',
+            paySign: result.data.paySign,
+            success(res) {
+              wx.redirectTo({
+                url: '/pages/orderInfo/orderInfo'
+              })
+            },
+            fail(res) {
+              wx.redirectTo({
+                url: '/pages/orderInfo/orderInfo'
+              })
+              this.setData({
+                submitLoding: false
+              })
+            }
+          })
       })
     }
 

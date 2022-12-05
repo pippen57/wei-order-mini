@@ -8,15 +8,16 @@
         "pages/order/order",
         "pages/order-details/index",
         "pages/category/index",
-        "pages/shop/select"
+        "pages/shop/select",
+        "pages/shop/detail"
     ],
-    "requiredPrivateInfos":[
-      "getLocation"
+    "requiredPrivateInfos": [
+        "getLocation"
     ],
     "permission": {
-      "scope.userLocation": {
-        "desc": "你的位置信息将用于获取您距离店铺距离" 
-      }
+        "scope.userLocation": {
+            "desc": "你的位置信息将用于获取您距离店铺距离"
+        }
     },
     "window": {
         "backgroundTextStyle": "light",

@@ -1,11 +1,18 @@
-
+<view class="banner">
+<swiper indicator-dots indicator-color="rgba(255,255,255,0.5)"
+indicator-active-color="#fff" circular autoplay interval="4000">
+<swiper-item><image src="https://cn.bing.com/th?id=OHR.BambooTreesIndia_ZH-CN3943852151_UHD.jpg&rf=LaDigue_1920x1080.jpg&pid=hp"></image></swiper-item>
+<swiper-item><image src="https://cn.bing.com/th?id=OHR.BambooTreesIndia_ZH-CN3943852151_UHD.jpg&rf=LaDigue_1920x1080.jpg&pid=hp"></image></swiper-item>
+<swiper-item><image src="https://cn.bing.com/th?id=OHR.BambooTreesIndia_ZH-CN3943852151_UHD.jpg&rf=LaDigue_1920x1080.jpg&pid=hp"></image></swiper-item>
+</swiper>
+</view>
 <view class="container">
-  <view class="header">
+  <!-- <view class="header">
     <image class='header-bg' src='/images/index_bg.png' style="position: absolute; left: 0rpx; top: 0rpx"></image>
     <text class='header-desc' style="position: absolute; left: -22rpx; top: -60rpx; font-size: x-large">
     萨默尔面馆
     </text>
-  </view>
+  </view> -->
 
   <view class="main">
     <navi-card

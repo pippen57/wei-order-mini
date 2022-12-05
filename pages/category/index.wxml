@@ -1,3 +1,6 @@
+<view wx:if="{{shops.shopNotice}}" class="notice">
+  <van-notice-bar mode="link" left-icon="volume-o" text="{{shops.shopNotice}}"  />
+</view>
 <van-overlay  show="{{ prodLoading }}"  bind:click="onClickHide">
   <view class="wrapper">
     <van-loading color="#1989fa" />
@@ -21,9 +24,7 @@
     <!-- </navigator> -->
   </view>
 </view>
-<view wx:if="{{shops.shopNotice}}" class="notice">
-  <van-notice-bar mode="link" left-icon="volume-o" text="{{shops.shopNotice}}"  />
-</view>
+
 <view class="box1">
   <view class="box-1">
     <van-sidebar>
@@ -40,7 +41,7 @@
     <van-card wx:for="{{goods}}" wx:key="id" centered="true" lazy-load="true" price="{{item.price}}" thumb-mode="aspectFill" tag="{{ item.badge ? item.badge : '' }}" desc="{{item.characteristic}}" title="{{item.productName}}" thumb="{{item.pic}}">
 
       <view class="goods-btn" slot="footer">
-        <van-tag wx:if="{{item.skuList.length>1}}" color="#3963BC" size="large" data-idx="{{item}}" bindtap="showProdDetail">选规格</van-tag>
+        <van-tag wx:if="{{item.skuList.length>=1}}" color="#3963BC" size="large" data-idx="{{item}}" bindtap="showProdDetail">选规格</van-tag>
         <van-icon wx:else name="add" color="#3963BC" size="50rpx" data-idx="{{item}}" bindtap="addCart" />
       </view>
     </van-card>

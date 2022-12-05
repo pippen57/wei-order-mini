@@ -1,5 +1,5 @@
 // pages/shop/select.js
-var http = require("../../utils/http");
+var {shopList} = require('../../utils/api.js')
 var { shopStorageKey } = require("../../utils/config")
 var app = getApp();
 Page({
@@ -45,17 +45,20 @@ Page({
         searchValue: event.detail.value
       })
     },
-    shopList(){
+    async shopList(){
       var _this = this 
-      http.shopList(_this,app.globalData.long, app.globalData.lat,_this.data.searchValue,r=>{
-        console.log(r);
-        r.data.forEach(ele => {
-          ele.kml = (ele.kml/1000).toFixed(2) // 距离保留3位小数
-        })
-        this.setData({
-          shops: r.data,
-          orderLoading:false
-        })
+      console.log(_this,app.globalData);
+      await shopList(app.globalData.long, app.globalData.lat,_this.data.searchValue).then(res=>{
+        console.log(res);
+        if(res.code==0){
+            res.data.forEach(ele => {
+                ele.kml = (ele.kml/1000).toFixed(2) // 距离保留3位小数
+            })
+            this.setData({
+                shops: res.data,
+                orderLoading:false
+            })
+        }
       })
     },
     search(event){
