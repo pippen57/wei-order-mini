@@ -12,6 +12,7 @@ var utils = require("../../utils/util")
 var {
     shopStorageKey
 } = require("../../utils/config")
+import Notify from '@vant/weapp/notify/notify';
 var app = getApp();
 Page({
 
@@ -26,6 +27,7 @@ Page({
         shopIsOpened: false, // 是否营业
         shippingCarInfoProp: true,
         prodLoading: true,
+        addShoppingBtn: false, // 加入购物车按钮是否禁用
         skuList: [],
         popupObj: {},
         defaultSku: undefined,
@@ -78,16 +80,11 @@ Page({
     },
 
     showShopInfoBind() {
-      wx.navigateTo({
-        url: '/pages/shop/detail?id='+this.data.shops.id,
-      })
-        // this.setData({
-        //     showShopInfoPOP: true,
-        //     shippingCarInfoProp: false
-        // })
+        wx.navigateTo({
+            url: '/pages/shop/detail?id=' + this.data.shops.id,
+        })
     },
     hideShopInfo() {
-
         this.setData({
             showShopInfoPOP: false,
             shippingCarInfoProp: true
@@ -109,10 +106,7 @@ Page({
         this.setData({
             peisongType
         })
-        wx.setStorage({
-            data: peisongType,
-            key: 'peisongType',
-        })
+        wx.setStorageSync('peisongType', peisongType)
     },
     async categories() {
         if (this.data.shops.id) {
@@ -140,9 +134,10 @@ Page({
             icon: 'loading'
         })
         this.products()
+
     },
-    products() {
-        getProductByCategoryId(this.data.shops.id, this.data.categorySelected.id).then(result => {
+    async products() {
+        await getProductByCategoryId(this.data.shops.id, this.data.categorySelected.id).then(result => {
             wx.hideToast({
                 success: (res) => {},
             })
@@ -152,6 +147,7 @@ Page({
                 })
             }
         })
+        this.processBadge()
     },
     showCartPop() {
         this.setData({
@@ -340,43 +336,79 @@ Page({
         }
         return false;
     },
-    async addCart(e){
-      var ths = this;
-      wx.showLoading()
-      var prod = e.currentTarget.dataset.idx
-      var params = {
-        shopId: this.data.shops.id,
-        productId: prod.id,
-        skuId: null,
-        quantity:  1
-
-    }
-    await addShoppingTrolley(params).then(res => {
-        wx.vibrateShort({
-            type: 'medium'
+    async addCart(e) {
+        this.setData({
+            addShoppingBtn: true
         })
-        wx.hideLoading()
-        ths.setData({
+        wx.showLoading()
+        var prod = e.currentTarget.dataset.idx
+        var params = {
+            shopId: this.data.shops.id,
+            productId: prod.id,
+            skuId: null,
+            quantity: 1
+        }
+        await addShoppingTrolley(params).then(res => {
+            wx.vibrateShort({
+                type: 'medium'
+            })
+            wx.hideLoading()
+        })
+        this.setData({
             showGoodsDetailPOP: false,
+            addShoppingBtn: false
         })
-
-    })
-    await this.getTrolley()
+        await this.getTrolley()
+    },
+    /**
+     * 点击商品列表中的数字步进器
+     */
+    async stepperProdAddCart(e) {
+        console.log(e);
+        wx.showLoading()
+        const prod = e.currentTarget.dataset.idx
+        var params = {
+            shopId: this.data.shops.id,
+            productId: prod.id,
+            skuId: null,
+            quantity: e.detail
+        }
+        await addShoppingTrolley(params).then(res => {
+            wx.vibrateShort({
+                type: 'medium'
+            })
+            wx.hideLoading()
+        })
+        this.setData({
+            showGoodsDetailPOP: false,
+            addShoppingBtn: false
+        })
+        await this.getTrolley()
     },
     /**
      * 添加购物车
      */
     async addShoppingTrolley(e) {
+        this.setData({
+            addShoppingBtn: true
+        })
         if (!this.data.findSku) {
+            this.setData({
+                addShoppingBtn: false
+            })
+            Notify("请选择商品规格");
             return;
         }
         if (!this.data.shops.id) {
+            this.setData({
+                addShoppingBtn: false
+            })
             wx.showModal({
                 title: '请先选择门店',
                 content: '',
                 complete: (res) => {
                     if (res.cancel) {
-
+                        Notify("请选择门店");
                     }
 
                     if (res.confirm) {
@@ -403,11 +435,10 @@ Page({
                 type: 'medium'
             })
             wx.hideLoading()
-            ths.setData({
-                showGoodsDetailPOP: false,
-
-            })
-
+        })
+        this.setData({
+            showGoodsDetailPOP: false,
+            addShoppingBtn: false
         })
         await this.getTrolley()
     },
@@ -425,6 +456,7 @@ Page({
             this.hideCartPop()
         })
         await this.getTrolley()
+
     },
     /**
      * 获取购物车数据
@@ -433,6 +465,7 @@ Page({
         await getTrolleyByShopId(this.data.shops.id).then(result => {
             if (result.code == 0) {
                 var price = 0
+                var numb = 0
                 if (result.data.length <= 0) {
                     this.setData({
                         shippingCarInfo: {
@@ -444,16 +477,17 @@ Page({
                     this.hideCartPop()
                     return
                 }
+
                 result.data.forEach(e => {
-                    if(e.sku==null||e.sku.length<=0){
-                      price += e.product.price * e.quantity
+                    if (e.sku == null || e.sku.length <= 0) {
+                        price += e.product.price * e.quantity
                     } else {
-                      price += e.sku.price * e.quantity
+                        price += e.sku.price * e.quantity
                     }
-                    
+                    numb += e.quantity
                 })
                 var shippingCarInfo = {
-                    number: result.data.length,
+                    number: numb,
                     price: price.toFixed(2),
                     items: result.data
                 }
@@ -462,6 +496,7 @@ Page({
                 })
             }
         })
+        this.processBadge()
     },
     onCounterChange(e) {
         this.setData({
@@ -491,19 +526,20 @@ Page({
         const categories = this.data.categories
         const goods = this.data.goods
         const shippingCarInfo = this.data.shippingCarInfo
-
         if (!categories) {
             return
+        } else {
+            categories.forEach(e => {
+                e.badge = 0
+            })
         }
         if (!goods) {
             return
+        } else {
+            goods.forEach(e => {
+                e.badge = 0
+            })
         }
-        categories.forEach(ele => {
-            ele.badge = 0
-        })
-        goods.forEach(ele => {
-            ele.badge = 0
-        })
 
         if (shippingCarInfo) {
             shippingCarInfo.items.forEach(ele => {
@@ -511,28 +547,29 @@ Page({
                     const category = categories.find(a => {
                         return a.id == ele.product.categoryId
                     })
-
                     if (category) {
-                        category.badge += ele.number
+                        category.badge += ele.quantity
                     }
-
                 }
-                if (ele.product.id) {
+                if (ele.productId) {
                     const _goods = goods.find(a => {
-                        return a.id == ele.product.id
+                        return a.id == ele.productId
                     })
                     if (_goods) {
-                        _goods.badge += ele.number
+                        _goods.badge += ele.quantity
                     }
                 }
             })
         }
-
         this.setData({
             categories,
             goods
         })
     },
+
+    /**
+     * 跳转页面
+     */
     selectshop() {
         wx.navigateTo({
             url: '/pages/shop/select?type=index',

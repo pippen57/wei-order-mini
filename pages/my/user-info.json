@@ -1,0 +1,11 @@
+{
+    "navigationBarBackgroundColor": "#3963BC",
+    "navigationBarTextStyle": "white",
+    "navigationBarTitleText": "用户信息",
+    "usingComponents": {
+        "mp-form-page": "weui-miniprogram/form-page/form-page",
+        "mp-form": "weui-miniprogram/form/form",
+        "mp-cells": "weui-miniprogram/cells/cells",
+        "mp-cell": "weui-miniprogram/cell/cell"
+    }
+}

@@ -1,6 +1,9 @@
 // pages/order/order.js
 var utils = require("../../utils/util")
 var { shopStorageKey } = require("../../utils/config")
+import Notify from '@vant/weapp/notify/notify';
+
+
 var {
     previaOrder,confirmOrder
 } = require("../../utils/api");
@@ -19,6 +22,7 @@ Page({
     peisongType: 'ts',
     diningTime: "立即",
     shops:null,
+    preId: null,
     currentDate: new Date().getHours() + ':' + (new Date().getMinutes() % 10 === 0 ? new Date().getMinutes() : Math.ceil(new Date().getMinutes() / 10) * 10),
     minHour: new Date().getHours(),
     minMinute: new Date().getMinutes(),
@@ -42,7 +46,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
-
+  
   },
   getshopInfo() {
     const shopInfo = wx.getStorageSync(shopStorageKey)
@@ -106,7 +110,8 @@ Page({
           trolleyList: result.data.prodList,
           totalCount: result.data.totalCount,
           totalMoney: result.data.totalMoney,
-          mobile: result.data.userPhone
+          mobile: result.data.userPhone,
+          preId: result.data.preId
         })
       })
 
@@ -121,89 +126,110 @@ Page({
    * 确认付款 并吊起微信支付
    */
   confirmOrder() {
-    if (this.data.submitLoding) return
-    const mobile = this.data.mobile
-    if (!mobile) {
-      wx.showToast({
-        title: '请输入手机号码',
-        icon: 'none'
-      })
-      return
-    }
-    if (!this.data.diningTime) {
-      wx.showToast({
-        title: '请选择取餐时间',
-        icon: 'none'
-      })
-      return
-    }
-    if (!this.data.shops.id) {
-      wx.showModal({
-        title: '请选择门店',
-        content: '',
-        complete: (res) => {
-          if (res.cancel) {
-
-          }
-
-          if (res.confirm) {
-
-          }
-        }
-      })
-      return
-    } else {
-      this.setData({
-        submitLoding: true
-      })
-      wx.showToast({
-        title: '正在提交订单.',
-        icon: 'loading'
-      })
-      var data = {
-          shopId: this.data.shops.id,
-          remarks: this.data.remark,
-          mealType: this.data.peisongType == 'ts' ? 1 : 2,
-          mealTime: this.data.diningTime
-        }
-      confirmOrder(data).then(result => {
-          wx.hideToast()
-          if (result.code != 0) {
-            this.setData({
-              submitLoding: false
-            })
-            wx.showToast({
-              title: result.msg,
-              icon:"error"
-            })
-            return
-          }
-          wx.requestPayment({
-            timeStamp: result.data.timeStamp,
-            nonceStr: result.data.nonceStr,
-            package: result.data.packageValue,
-            signType: 'RSA',
-            paySign: result.data.paySign,
-            success(res) {
-              wx.redirectTo({
-                url: '/pages/orderInfo/orderInfo'
+    wx.requestSubscribeMessage({
+        tmplIds: ['yu6v-lTeeNRb3f-1uP1DCBPUaRKvG3vUfSapQsIHCt8','mVlOcEfdt-VujaF_fcZN4Vgty37tkXND1TXw478lUyM'],
+        complete:res=> {
+            if (this.data.submitLoding) return
+            const mobile = this.data.mobile
+            if (!mobile) {
+              wx.showToast({
+                title: '请输入手机号码',
+                icon: 'none'
               })
-            },
-            fail(res) {
-              wx.redirectTo({
-                url: '/pages/orderInfo/orderInfo'
+              return
+            }
+            if (!this.data.diningTime) {
+              wx.showToast({
+                title: '请选择取餐时间',
+                icon: 'none'
               })
+              return
+            }
+            if (!this.data.preId) {
+                wx.showModal({
+                    title: '提示',
+                    content: '支付超时，请重下单',
+                    showCancel:false,
+                    success (res) {
+                      if (res.confirm) {
+                        wx.navigateTo({
+                          url: '/pages/category/index',
+                        })
+                      } else if (res.cancel) {
+                        console.log('用户点击取消')
+                      }
+                    }
+                  })
+                return
+              }
+            if (!this.data.shops.id) {
+              wx.showModal({
+                title: '请选择门店',
+                content: '',
+                complete: (res) => {
+                  if (res.cancel) {
+        
+                  }
+        
+                  if (res.confirm) {
+        
+                  }
+                }
+              })
+              return
+            } else {
               this.setData({
-                submitLoding: false
+                submitLoding: true
+              })
+              wx.showToast({
+                title: '正在提交订单.',
+                icon: 'loading'
+              })
+              var data = {
+                  shopId: this.data.shops.id,
+                  remarks: this.data.remark,
+                  mealType: this.data.peisongType == 'ts' ? 1 : 2,
+                  mealTime: this.data.diningTime,
+                  preId: this.data.preId
+                }
+              confirmOrder(data).then(result => {
+                  wx.hideToast()
+                  if (result.code != 0) {
+                    this.setData({
+                      submitLoding: false
+                    })
+                    Notify(result.msg);
+                    return
+                  }
+                  wx.requestPayment({
+                    timeStamp: result.data.timeStamp,
+                    nonceStr: result.data.nonceStr,
+                    package: result.data.packageValue,
+                    signType: 'RSA',
+                    paySign: result.data.paySign,
+                    success(res) {
+        
+                      wx.redirectTo({
+                        url: '/pages/orderInfo/orderInfo'
+                      })
+                    },
+                    fail(res) {
+                      wx.redirectTo({
+                        url: '/pages/orderInfo/orderInfo'
+                      })
+                      this.setData({
+                        submitLoding: false
+                      })
+                    }
+                  })
               })
             }
-          })
-      })
-    }
+        }
+    })
+    
 
   },
   bindTextAreaBlur(e) {
-    console.log(e.detail.value);
     this.setData({
       remarks: e.detail.value
     })

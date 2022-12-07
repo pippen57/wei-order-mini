@@ -12,6 +12,6 @@
 
 <van-cell-group>
   <van-cell icon="orders-o" title="我的订单" is-link url="/pages/orderInfo/orderInfo" />
-  <van-cell icon="user-o" title="个人资料" is-link />
+  <van-cell icon="user-o" title="个人资料" is-link  url="/pages/my/user-info"/>
   <van-cell icon="info-o" title="关于" is-link  />
 </van-cell-group>

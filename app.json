@@ -9,7 +9,8 @@
         "pages/order-details/index",
         "pages/category/index",
         "pages/shop/select",
-        "pages/shop/detail"
+        "pages/shop/detail",
+        "pages/my/user-info"
     ],
     "requiredPrivateInfos": [
         "getLocation"
@@ -71,8 +72,13 @@
         "van-goods-action": "@vant/weapp/goods-action/index",
         "van-goods-action-icon": "@vant/weapp/goods-action-icon/index",
         "van-toast": "@vant/weapp/toast/index",
+        "van-image": "@vant/weapp/image/index",
         "van-loading": "@vant/weapp/loading/index",
+        "van-notify": "@vant/weapp/notify/index",
         "van-goods-action-button": "@vant/weapp/goods-action-button/index"
     },
-    "sitemapLocation": "sitemap.json"
+    "sitemapLocation": "sitemap.json",
+    "useExtendedLib": {
+        "weui": true
+      }
 }

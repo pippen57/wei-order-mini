@@ -375,3 +375,11 @@ page {
   height: 100%;
   background-color: white;
 }
+.plusColor {
+    background-color: #3963BC !important;
+}
+.minuxColor {
+    background-color: #fff;
+    border: 1px solid #3963BC !important;
+    color: #3963BC !important;
+}

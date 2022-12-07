@@ -31,8 +31,15 @@
 
 <view class="goods-title">商品明细</view>
 <van-row custom-class="detail" wx:for="{{trolleyList}}" wx:key="index">
-	<van-col span="18">
-  
+    <van-col span="4">
+        <van-image
+                round
+                width="3rem"
+                height="3rem"
+                src="{{item.sku.pic?item.sku.pic:item.product.pic}}"
+                />
+     </van-col>
+	<van-col span="14">
 		<view class="detail-1">{{item.product.productName}}</view>
 		<view class="goods-label">{{item.label}}
 			<block >
@@ -81,3 +88,5 @@
   bind:confirm="diningTimeConfirm"
 />
 </van-popup>
+<!-- 在页面内添加对应的节点 -->
+<van-notify id="van-notify" />

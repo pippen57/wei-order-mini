@@ -29,9 +29,23 @@
     <van-cell title="{{order.shop.shopName}}" label="{{order.shop.shopAddress}}" border="{{false}}" url="/pages/shop/detail?id={{order.shop.id}}" />
     <van-icon name="phone-circle-o" size="70rpx" color="#3963BC" bindtap="callShop" />
   </view>
-  <van-divider dashed />
-  <!-- <van-cell wx:if="{{orderDetail.logistics}}" title="{{orderDetail.logistics.linkMan}} / {{orderDetail.logistics.mobile}}" label="{{orderDetail.logistics.provinceStr}}{{orderDetail.logistics.cityStr}}{{orderDetail.logistics.areaStr}}{{orderDetail.logistics.address}}" /> -->
-  <van-cell wx:for="{{order.orderItem}}" wx:key="{{item.id}}" title="{{item.productName}} / x{{item.productCount}}" label="{{item.skuName}}" value="¥{{item.productTotalAmount}}" value-class="call-value" />
+  <van-divider contentPosition="left">商品详情</van-divider>
+  <van-row custom-class="detail" wx:for="{{order.orderItem}}" wx:key="index">
+    <van-col span="3">
+        <van-image
+                round
+                width="3rem"
+                height="3rem"
+                src="{{item.pic}}"
+                />
+     </van-col>
+	<van-col span="18">
+		<view class="detail">{{item.productName}} / x{{item.productCount}}</view>
+	</van-col>
+	<van-col span="1">¥{{item.productTotalAmount}}</van-col>
+</van-row>
+  <!-- <van-cell wx:for="{{order.orderItem}}" wx:key="{{item.id}}" title="{{item.productName}} / x{{item.productCount}}" label="{{item.skuName}}" value="¥{{item.productTotalAmount}}"  value-class="call-value" /> -->
+
   <van-cell title="合计" value="¥{{order.order.total}}" value-class="call-value" />
   <view class="times">
     <view>下单: {{order.order.createTime}}</view>

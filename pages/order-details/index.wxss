@@ -47,3 +47,7 @@ page {
   width: 400rpx;
   height: 400rpx;
 }
+.detail {
+    background-color: #ffffff;
+    padding: 8rpx 32rpx;
+  }

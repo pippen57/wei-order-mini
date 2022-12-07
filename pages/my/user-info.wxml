@@ -1,0 +1,18 @@
+<!--pages/my/user-info.wxml-->
+
+<view data-weui-theme="{{theme}}">
+  <button class="avatar-wrapper" open-type="chooseAvatar" bind:chooseavatar="onChooseAvatar">
+    <image class="avatar" src="{{avatarUrl}}"></image>
+  </button> 
+  <mp-form>
+    <mp-cells>
+      <mp-cell title="昵称">
+        <input type="nickname" class="weui-input" placeholder="请输入昵称"/>
+      </mp-cell>
+      <mp-cell prop="mobile" title="账号" ext-class=" weui-cell_vcode">
+        <input bindinput="formInputChange" data-field="mobile" class="weui-input" placeholder="请输入手机号"/>
+        <van-button slot="footer" plain hairline type="primary" size="normal">获取手机号码</van-button>
+      </mp-cell>
+    </mp-cells>
+  </mp-form>
+</view>
