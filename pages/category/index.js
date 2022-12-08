@@ -336,6 +336,10 @@ Page({
         }
         return false;
     },
+
+    /**
+     * 添加购物车 
+     */
     async addCart(e) {
         this.setData({
             addShoppingBtn: true
@@ -367,21 +371,28 @@ Page({
         console.log(e);
         wx.showLoading()
         const prod = e.currentTarget.dataset.idx
+
+        const item = this.data.shippingCarInfo.items.find(a => {
+            console.log(a,prod.id);
+            return a.productId == prod.id 
+        })
+        console.log(item);
         var params = {
-            shopId: this.data.shops.id,
-            productId: prod.id,
-            skuId: null,
+            id: item.id,
+            shopId: item.shopId,
+            productId: item.product.id,
+            skuId: item.sku != null && item.sku.length > 0 ? item.sku.id : null,
             quantity: e.detail
         }
-        await addShoppingTrolley(params).then(res => {
-            wx.vibrateShort({
-                type: 'medium'
-            })
+        await cartStepChange(params).then(result => {
             wx.hideLoading()
-        })
-        this.setData({
-            showGoodsDetailPOP: false,
-            addShoppingBtn: false
+            if (result.code != 0) {
+                wx.showToast({
+                    title: result.msg,
+                    icon: 'none'
+                })
+                return
+            }
         })
         await this.getTrolley()
     },

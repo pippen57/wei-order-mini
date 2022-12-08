@@ -127,7 +127,7 @@ Page({
    */
   confirmOrder() {
     wx.requestSubscribeMessage({
-        tmplIds: ['yu6v-lTeeNRb3f-1uP1DCBPUaRKvG3vUfSapQsIHCt8','mVlOcEfdt-VujaF_fcZN4Vgty37tkXND1TXw478lUyM'],
+        tmplIds: ['yu6v-lTeeNRb3f-1uP1DCBPUaRKvG3vUfSapQsIHCt8','59rCkTAc-w3onTN1QKZcu2OEBmHSjefWqXiaCFNwYPY'],
         complete:res=> {
             if (this.data.submitLoding) return
             const mobile = this.data.mobile
