@@ -2,7 +2,7 @@
   <view class='logo-container' wx:if="{{users}}">
     <image class='logo-img' src='{{users.avatar}}'></image>
     <view class="version-container">
-        {{users.username}}
+        {{users.username?users.username:users.mobile}}
     </view>
   </view>
   <view class='logo-container' wx:else>

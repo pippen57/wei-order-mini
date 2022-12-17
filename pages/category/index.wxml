@@ -40,10 +40,13 @@
         <van-empty wx:if="{{!goods || goods.length == 0}}" description="暂无商品" />
         <van-card wx:for="{{goods}}" wx:key="id" centered="true" lazy-load="true" price="{{item.price}}" thumb-mode="aspectFill" tag="{{ item.badge ? item.badge : '' }}" desc="{{item.characteristic}}" title="{{item.productName}}" thumb="{{item.pic}}">
 
-            <view class="goods-btn" slot="footer">
+            <view class="goods-btn" slot="footer" wx:if="{{ shopIsOpened }}">
                 <van-tag wx:if="{{item.skuList.length>=1}}" color="#3963BC" size="large" data-idx="{{item}}" bindtap="showProdDetail">选规格</van-tag>
                 <van-icon wx:if="{{item.skuList.length<1 && item.badge<=0}}" name="add" color="#3963BC" size="50rpx" data-idx="{{item}}" bindtap="addCart" />
                 <van-stepper wx:if="{{item.skuList.length<1 && item.badge>0}}" value="{{ item.badge }}" theme="round" long-press="{{ false }}" plus-class="plusColor" minus-class="minuxColor" min="1" max="99" data-idx="{{item}}" bind:change="stepperProdAddCart" />
+            </view>
+            <view class="goods-btn" slot="footer" wx:else>
+                <van-tag  color="#aaa" size="large" bindtap="showOpenNotify">休息中</van-tag>
             </view>
         </van-card>
     </scroll-view>

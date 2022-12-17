@@ -83,7 +83,7 @@ async function request(url, data = {}, method = "GET", contentType = 'json') {
         method: method,
         header: {
           'Content-Type': contentType.toLowerCase() == 'json' ? "application/json" : "application/x-www-form-urlencoded",
-          'token':  wx.getStorageSync('token')
+          'token':  wx.getStorageSync(config.tokenStorageKey)
         },
         success: function(res) {
           if (res.statusCode == 200) {

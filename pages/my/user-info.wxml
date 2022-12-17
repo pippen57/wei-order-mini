@@ -7,12 +7,14 @@
   <mp-form>
     <mp-cells>
       <mp-cell title="昵称">
-        <input type="nickname" class="weui-input" placeholder="请输入昵称"/>
+        <input bindblur="formInputnameChange"  value="{{ name }}" class="weui-input" placeholder="请输入昵称"/>
       </mp-cell>
       <mp-cell prop="mobile" title="账号" ext-class=" weui-cell_vcode">
-        <input bindinput="formInputChange" data-field="mobile" class="weui-input" placeholder="请输入手机号"/>
-        <van-button slot="footer" plain hairline type="primary" size="normal">获取手机号码</van-button>
+        <input bindinput="formInputChange" value="{{ phone }}" data-field="mobile" class="weui-input" placeholder="请输入手机号"/>
+        <van-button slot="footer" plain hairline type="primary" size="normal" open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber">获取手机号码</van-button>
       </mp-cell>
     </mp-cells>
   </mp-form>
+  <van-button type="primary" block bind:click="subUserInfo">提交</van-button>
 </view>
+<van-notify id="van-notify" />

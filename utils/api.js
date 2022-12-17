@@ -12,8 +12,17 @@ export const https = (options) => {
  */
 export function login(code) {
     return request('/login?code=' + code, {}, 'post')
+}
+/**
+ * 获取用户手机号
+ * @param {String} code code
+ */
+export function phoneNumber(code) {
+    return request('/wx/phone?code='+code)
+}
 
-
+export function userInfo(data) {
+    return request('/user_info',data,'POST')
 }
 /**
  * 获取店铺列表

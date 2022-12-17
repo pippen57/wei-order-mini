@@ -96,7 +96,7 @@ Page({
                 res.data.kml = (res.data.kml / 1000).toFixed(2)
                 this.setData({
                     shops: res.data,
-                    shopIsOpened: utils.checkIsOpened(res.data.openTime)
+                    shopIsOpened: utils.checkIsOpened(res.data.openTime) && res.data.shopStatus==1
                 })
             }
         })
@@ -368,12 +368,10 @@ Page({
      * 点击商品列表中的数字步进器
      */
     async stepperProdAddCart(e) {
-        console.log(e);
         wx.showLoading()
         const prod = e.currentTarget.dataset.idx
 
         const item = this.data.shippingCarInfo.items.find(a => {
-            console.log(a,prod.id);
             return a.productId == prod.id 
         })
         console.log(item);
@@ -585,6 +583,9 @@ Page({
         wx.navigateTo({
             url: '/pages/shop/select?type=index',
         })
+    },
+    showOpenNotify() {
+        Notify({ type: 'warning', message: '店铺休息中' })
     },
     /**
      * 生命周期函数--监听页面初次渲染完成
