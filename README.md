@@ -8,9 +8,15 @@
 
 使用之前要先确认后端系统已经启动成功
 
-后端地址：
-
-后端UI：
+- 后端地址：
+  - Github: https://github.com/pippen57/wei-order
+  - Gitee: https://gitee.com/pippen57/wei-order
+- 后端UI:
+  - Github: https://github.com/pippen57/wei-order-ui
+  - Gitee: https://gitee.com/pippen57/wei-order-ui
+- 小程序：
+  - Github: https://github.com/pippen57/wei-order-mini
+  - Gitee: https://gitee.com/pippen57/wei-order-mini
 
 1. 下载安装开发工具
 
